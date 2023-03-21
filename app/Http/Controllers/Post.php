@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Post extends Controller
 {
@@ -28,8 +29,8 @@ class Post extends Controller
     public function store(Request $request)
     {
         $form = $request->all();
-        DB::table('posts')->insert(['integer' => $form[integer]]);
-        return response ()->json(true);
+        DB::table('posts')->insert(['integer' => $form['integer']]);
+        return response ()->json($form);
     }
 
     /**

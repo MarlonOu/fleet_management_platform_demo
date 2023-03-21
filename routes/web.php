@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,5 +16,3 @@ use App\Http\Controllers\Post;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::resource('photos', Post::class);

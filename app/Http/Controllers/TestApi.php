@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class PhotoController extends Controller
+class TestApi extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,9 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $form = $request->all();
+        DB::table('test_api')->insert(['test' => $form['data']]);
+        return response ()->json($form);
     }
 
     /**
