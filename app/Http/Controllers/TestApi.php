@@ -12,7 +12,7 @@ class TestApi extends Controller
      */
     public function index()
     {
-        //
+        return "hello";
     }
 
     /**
