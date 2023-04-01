@@ -30,11 +30,15 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     '@nuxtjs/style-resources',
+    '@nuxtjs/composition-api/module'
   ],
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
   ],
-
+  axios: {
+    // proxyHeaders: false
+  },
   styleResources: {
     scss: [
       'assets/variables.scss',

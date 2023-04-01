@@ -1,32 +1,44 @@
 <template>
-<div class="app-button--primary">
-  hello 世界 連假快樂
-</div>
-
+  <div class="app-button--primary">
+    hello 世界 連假快樂 {{ id }}
+  </div>
 </template>
 
 <script>
-export default {
-  name: 'IndexPage'
-}
+import { computed, defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  setup() {
+    const id = computed(() => {
+      return 123
+    })
+    return {
+      id
+    }
+  }
+
+})
+
+
 </script>
 
 <style lang="scss">
-  .app-button {
-    position: relative;
-    display: inline-flex;
-    cursor: pointer;
-    text-align: center;
-    white-space: nowrap;
-    align-items: center;
-    justify-content: center;
-    vertical-align: top;
-    text-decoration: none;
-    outline: none;
-    &--primary {
-        background-color: $primary;
-        color: $white;
-    }
+.app-button {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  vertical-align: top;
+  text-decoration: none;
+  outline: none;
+
+  &--primary {
+    background-color: $primary;
+    color: $white;
+  }
 
 }
 </style>
