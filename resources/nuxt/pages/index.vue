@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="app-button--primary">
   hello 世界 連假快樂
 </div>
 
@@ -10,3 +10,23 @@ export default {
   name: 'IndexPage'
 }
 </script>
+
+<style lang="scss">
+  .app-button {
+    position: relative;
+    display: inline-flex;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    text-decoration: none;
+    outline: none;
+    &--primary {
+        background-color: $primary;
+        color: $white;
+    }
+
+}
+</style>

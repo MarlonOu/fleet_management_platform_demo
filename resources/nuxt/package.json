@@ -15,5 +15,10 @@
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@nuxtjs/style-resources": "^1.2.1",
+    "sass": "^1.60.0",
+    "sass-loader": "^10.1.1",
+    "webpack": "^4.0.0"
+  }
 }
