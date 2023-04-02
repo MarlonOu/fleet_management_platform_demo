@@ -10,8 +10,9 @@ import { computed, defineComponent, useContext } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
-    const { $swal } = useContext()
+    const { $swal, $axios } = useContext()
     const dont = () => {
+      $axios.get('/123')
       $swal("Success!", "Transaction was successful", "success");
     }
     const id = computed(() => {
