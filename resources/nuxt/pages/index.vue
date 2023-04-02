@@ -1,19 +1,25 @@
 <template>
   <div class="app-button--primary">
     hello 世界 連假快樂 {{ id }}
+    <button @click="dont">go</button>
   </div>
 </template>
 
 <script>
-import { computed, defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useContext } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
+    const { $swal } = useContext()
+    const dont = () => {
+      $swal("Success!", "Transaction was successful", "success");
+    }
     const id = computed(() => {
       return 123
     })
     return {
-      id
+      id,
+      dont
     }
   }
 
