@@ -12,7 +12,7 @@ export default defineComponent({
   setup() {
     const { $swal, $axios } = useContext()
     const dont = () => {
-      $axios.get('/123')
+      $axios.get('/api/test')
       $swal("Success!", "Transaction was successful", "success");
     }
     const id = computed(() => {

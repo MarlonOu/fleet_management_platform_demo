@@ -36,15 +36,24 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    'vue-sweetalert2/nuxt'
+    'vue-sweetalert2/nuxt',
+    '@nuxtjs/proxy'
   ],
   axios: {
-    // proxyHeaders: false
+    proxy: true
   },
   styleResources: {
     scss: [
       'assets/variables.scss',
     ],
+  },
+  proxy: {
+    '/api': {
+      target: 'http://127.0.0.1:8000',
+      pathRewrite: {
+        '': '/'
+      }
+    }
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

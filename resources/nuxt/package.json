@@ -19,6 +19,7 @@
     "vue-sweetalert2": "5.0.2"
   },
   "devDependencies": {
+    "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/style-resources": "^1.2.1",
     "sass": "^1.60.0",
     "sass-loader": "^10.1.1",
