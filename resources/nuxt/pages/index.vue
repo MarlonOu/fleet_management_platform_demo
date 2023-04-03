@@ -1,6 +1,6 @@
 <template>
   <div class="app-button--primary">
-    hello 世界 連假快樂 {{ id }}
+    hello 世界 連假快樂
     <button @click="dont">go</button>
   </div>
 </template>
@@ -12,7 +12,7 @@ export default defineComponent({
   setup() {
     const { $swal, $axios } = useContext()
     const dont = () => {
-      $axios.get('/api/test')
+      $axios.get('api/welcome')
       $swal("Success!", "Transaction was successful", "success");
     }
     const id = computed(() => {
