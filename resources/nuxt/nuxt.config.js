@@ -40,7 +40,8 @@ export default {
   modules: [
     '@nuxtjs/axios',
     'vue-sweetalert2/nuxt',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    ['nuxt-gmaps', { key: 'AIzaSyBn-sDDnmPhUsHGZ0dD5xeHBgv8olGc-BY', }]
   ],
   axios: {
     proxy: true
