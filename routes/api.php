@@ -7,7 +7,10 @@ use App\Http\Controllers\Post;
 use App\Http\Controllers\TestApi;
 use App\Models\Attendance;
 use App\Models\J1939_vehicle_realtime_data;
-
+use App\Models\Vehicle_realtime_information_123;
+use App\Models\Diver_information_123;
+use App\Models\Commercial_vehicle_specification_123;
+use App\Http\Controllers\Diver_information_123_Controller;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,7 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::resource('photos', Post::class);
-Route::resource('t make:model Roleest', TestApi::class);
+Route::resource('make:model Roleest', TestApi::class);
 Route::get('/welcome', function(){
     return  J1939_vehicle_realtime_data::all();
    // $real_time = DB::table('j1939_vehicle_realtime_data')->get()->toJson();
@@ -33,38 +36,29 @@ Route::get('/welcome', function(){
 });
 
 
-/*Route::middleware('auth:api')->group(function () {
-    Route::get('/user', function (Request $request) {
+Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function(Request $request) {
         return $request->user();
     });
+});
+
+Route::get('/getVehicleRealtimeStatus', function(){
+    return  Vehicle_realtime_information_123::all();
+});
+
+Route::get('/getVehicleRealtimeInformation', function(){
+    return  Vehicle_realtime_information_123::all();
+});
+
+Route::get('/getCommercialVehicleSpecification', function(){
+    return  Commercial_vehicle_specification_123::all();
+});
+
+Route::resource('/getDiverInformation', Diver_information_123_Controller::class);
 
 
- $table->Increments('id');
-            $table->integer('Tax_ID', 11);
-            $table->char('Company Name', 50);
-            $table->char('CEO', 50);
-            $table->char('Contact Window', 50);
-            $table->char('TEL', 50);
-            $table->char('Address', 50);
-            $table->timestamps();
 
 
-return new class extends Migration
-{
-
-public function up(): void
-{
-    Schema::rename('123_fleet_owner_information', '123_fleet_owner_information_table');
-}
-
-public function down(): void
-{
-    Schema::rename('123_fleet_owner_information_table', '123_fleet_owner_information');
-}
-};
-
-
-*/
 
 
 

@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('123_driver_behavior_statistics', function (Blueprint $table) {
+        Schema::create('123_company_information', function (Blueprint $table) {
             $table->id();
-            $table->integer('employ_id');
-            $table->char('month', 50);
-            $table->integer('average score');
-            $table->integer('violation');
-            $table->integer('mistake/error',);
-            $table->integer('slip/lapse');
+            $table->integer('tax_id');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('123_driver_behavior_statistics');
+        Schema::dropIfExists('123_company_information');
     }
 };

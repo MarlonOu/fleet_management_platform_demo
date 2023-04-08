@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('123_Driver_Information_table', function (Blueprint $table) {
+        Schema::create('123_driver_information', function (Blueprint $table) {
             $table->id();
-            $table->integer('Employ_ID');
-            $table->char('Driver_Name', 50);
-            $table->char('Sex', 50);
-            $table->date('Birthday');
-            $table->char('TEL', 50);
-            $table->char('Address', 50);
+            $table->integer('employ_id');
+            $table->char('driver_name', 50);
+            $table->integer('driver_number');
+            $table->char('sex', 50);
+            $table->date('birthday');
+            $table->char('tel', 50);
+            $table->char('address', 50);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('123_Driver_Information_table');
+        Schema::dropIfExists('123_driver_information');
     }
 };

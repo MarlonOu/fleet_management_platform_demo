@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('123__fleet__owner__information', function (Blueprint $table) {
+        Schema::create('123_fleet_owner_information', function (Blueprint $table) {
             $table->id();
-            $table->integer('Tax_ID');
-            $table->char('Company Name', 50);
-            $table->char('CEO', 50);
-            $table->char('Contact Window', 50);
-            $table->char('TEL', 50);
-            $table->char('Address', 50);
+            $table->integer('tax_id');
+            $table->char('company name', 50);
+            $table->char('ceo', 50);
+            $table->char('contact window', 50);
+            $table->char('tel', 50);
+            $table->char('address', 50);
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('123__fleet__owner__information');
+        Schema::dropIfExists('123_fleet_owner_information');
     }
 };

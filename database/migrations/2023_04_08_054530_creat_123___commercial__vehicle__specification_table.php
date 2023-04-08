@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('123_Commercial_Vehicle_Specification_table', function (Blueprint $table) {
+        Schema::create('123_commercial_vehicle_specification', function (Blueprint $table) {
             $table->id();
             $table->integer('vehicle_number');
             $table->char('licence_plate',8);
@@ -33,6 +33,11 @@ return new class extends Migration
             $table->string('main_brake');
             $table->string('aux_brake');
             $table->string('abs',30);
+            $table->string('suspension_front_axle', 30);
+            $table->string('suspension_rear_axle', 30);
+            $table->string('fuel_tank_Volume', 30);
+            $table->string('licence_plate_no', 30);
+            $table->char('emission_standard', 5);
             $table->timestamps();
         });
     }
@@ -42,6 +47,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('123_Commercial_Vehicle_Specification_table');
+        Schema::dropIfExists('123_commercial_vehicle_specification');
     }
 };

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('123_vehicle_attendance_record_table', function (Blueprint $table) {
+        Schema::create('123_vehicle_attendance_record', function (Blueprint $table) {
             $table->id();
             $table->integer('vehicle_number');
             $table->integer('task_start_time');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('123_vehicle_attendance_record_table');
+        Schema::dropIfExists('123_vehicle_attendance_record');
     }
 };
