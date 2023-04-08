@@ -1,12 +1,15 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-8">
-        <div class="bg-primary" style="height:50vh">
-          地圖 {{ }}
+      <div :class="{ 'col-sm-12': detailHide, 'col-sm-8': !detailHide }">
+        <div style="height:50vh">
+          <Map></Map>
         </div>
-        <div class="bg-success" style="height:50vh">
-          <table style="width: 100%">
+        <div style="height: 5vh">
+          <button @click="turnDetail()"><span v-if="detailHide">縮小</span><span v-else>放大</span></button>
+        </div>
+        <div class="bg-success" style="height:45vh">
+          <table style="width: 100%" class="text-white">
             <tr>
               <th>狀態</th>
               <th>狀態</th>
@@ -27,7 +30,7 @@
           </table>
         </div>
       </div>
-      <div class="col-sm-4" style="height:100vh; overflow-y:scroll">
+      <div v-if="!detailHide" class="col-sm-4" style="height:100vh; overflow-y:scroll">
         <h4>車輛狀態</h4>
         時速: <br>
         車隊: <br>
@@ -99,13 +102,19 @@ export default defineComponent({
     const dont = () => {
       $swal("Success!", "Transaction was successful", "success");
     }
-    const id = computed(() => {
-      return 123
-    })
+    const detailHide = ref(true)
+    const turnDetail = () => {
+      if (detailHide.value) {
+        detailHide.value = false
+      } else {
+        detailHide.value = true
+      }
+    }
     return {
-      id,
       dont,
-      allCarList
+      allCarList,
+      detailHide,
+      turnDetail
     }
   }
 
@@ -132,5 +141,9 @@ export default defineComponent({
     color: $white;
   }
 
+}
+
+.GMap__Wrapper {
+  height: 50vh;
 }
 </style>
