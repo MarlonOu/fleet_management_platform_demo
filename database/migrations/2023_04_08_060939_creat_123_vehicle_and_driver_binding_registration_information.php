@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('123_vehicle_and_driver_binding_registration_information', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->integer('vehicle_number');
+            $table->integer('driver_number');
+            $table->integer('bind_mileage');
             $table->timestamps();
         });
     }
@@ -27,7 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-
+        Schema::dropIfExists('123_vehicle_and_driver_binding_registration_information');
     }
 };

@@ -33,5 +33,40 @@ Route::get('/welcome', function(){
 });
 
 
+/*Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+
+ $table->Increments('id');
+            $table->integer('Tax_ID', 11);
+            $table->char('Company Name', 50);
+            $table->char('CEO', 50);
+            $table->char('Contact Window', 50);
+            $table->char('TEL', 50);
+            $table->char('Address', 50);
+            $table->timestamps();
+
+
+return new class extends Migration
+{
+
+public function up(): void
+{
+    Schema::rename('123_fleet_owner_information', '123_fleet_owner_information_table');
+}
+
+public function down(): void
+{
+    Schema::rename('123_fleet_owner_information_table', '123_fleet_owner_information');
+}
+};
+
+
+*/
+
+
+
 
 

@@ -9,11 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('test_api', function (Blueprint $table) {
-            $table->id();
-            $table->string('test');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('api_token', 80)->after('password')
+                ->unique()
+                ->nullable()
+                ->default(null);
         });
     }
 
@@ -22,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };
