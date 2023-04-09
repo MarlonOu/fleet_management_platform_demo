@@ -11,6 +11,8 @@ use App\Models\Vehicle_realtime_information_123;
 use App\Models\Diver_information_123;
 use App\Models\Commercial_vehicle_specification_123;
 use App\Http\Controllers\Diver_information_123_Controller;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

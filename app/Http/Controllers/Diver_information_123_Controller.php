@@ -68,12 +68,23 @@ class Diver_information_123_Controller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $diver_information_123 = new Diver_information_123;
-        $form =$request->all();
-        $diver_information_123 = Diver_information_123::find($id);
-        $diver_information_123->driver_name = $form['driver_name'];
+//        $diver_information_123 = new Diver_information_123;
+//        $form =$request->all();
+//        $diver_information_123 = Diver_information_123::find($id);
+//        $diver_information_123->driver_name = $form['driver_name'];
+//        $diver_information_123->save();
+//        return response ()->json($request,$id);
+
+        $diver_information_123  = Diver_information_123::find($id);
+        $diver_information_123->driver_name = $request->driver_name;
+        $diver_information_123->employ_id = $request->employ_id;
+        $diver_information_123->driver_number = $request->driver_number;
+        $diver_information_123->sex = $request->sex;
+        $diver_information_123->birthday = $request->birthday;
+        $diver_information_123->tel = $request->tel;
+        $diver_information_123->address = $request->address;
         $diver_information_123->save();
-        return response ()->json($request,$id);
+        return response($diver_information_123);
     }
 
     /**
