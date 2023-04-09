@@ -8,9 +8,9 @@
                 @click="currentLocation = location">
                 <GMapInfoWindow :options="{ maxWidth: 200 }">
                     <code>
-                                                                                                                                                                                                                    lat: {{ location.lat }},
-                                                                                                                                                                                                                    lng: {{ location.lng }}
-                                                                                                                                                                                                                  </code>
+                                                                                                                                                                                                                                    lat: {{ location.lat }},
+                                                                                                                                                                                                                                    lng: {{ location.lng }}
+                                                                                                                                                                                                                                  </code>
                 </GMapInfoWindow>
             </GMapMarker>
             <GMapCircle :options="circleOptions" />
@@ -59,23 +59,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.app-button {
-    position: relative;
-    display: inline-flex;
-    cursor: pointer;
-    text-align: center;
-    white-space: nowrap;
-    align-items: center;
-    justify-content: center;
-    vertical-align: top;
-    text-decoration: none;
-    outline: none;
-
-    &--primary {
-        background-color: $primary;
-        color: $white;
-    }
-
-}
-</style>
