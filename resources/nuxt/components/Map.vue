@@ -2,15 +2,15 @@
     <div>
         <GMap ref="gMap" language="cn" :cluster="{ options: { styles: clusterStyle } }"
             :center="{ lat: locations[0].lat, lng: locations[0].lng }" :options="{ fullscreenControl: false }" :zoom="6">
-            <GMapMarker v-for="location in locations" :key="location.id"
+            <GMapMarker v-for="location in locations" :key="location.id" style="width: 100px; height: 100px;"
                 :position="{ lat: location.lat, lng: location.lng }"
                 :options="{ icon: location === currentLocation ? pins.selected : pins.notSelected }"
                 @click="currentLocation = location">
                 <GMapInfoWindow :options="{ maxWidth: 200 }">
                     <code>
-                            lat: {{ location.lat }},
-                            lng: {{ location.lng }}
-                        </code>
+                                                                                                                                                                                                                                    lat: {{ location.lat }},
+                                                                                                                                                                                                                                    lng: {{ location.lng }}
+                                                                                                                                                                                                                                  </code>
                 </GMapInfoWindow>
             </GMapMarker>
             <GMapCircle :options="circleOptions" />
@@ -31,8 +31,8 @@ export default {
 
             locations: [
                 {
-                    lat: 44.933076,
-                    lng: 15.629058
+                    lat: 23.0255745527596,
+                    lng: 120.22629531746722
                 },
                 {
                     lat: 45.815,
@@ -44,8 +44,8 @@ export default {
                 }
             ],
             pins: {
-                selected: "data:image/png;base64,iVBORw0KGgo...",
-                notSelected: "data:image/png;base64,iVBORw0KGgo..."
+                selected: "/pins.svg",
+                notSelected: "/pins.svg"
             },
             clusterStyle: [
                 {

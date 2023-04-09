@@ -6,7 +6,7 @@
                 <input type="text" class="form-control">
             </div>
             <div class="mb-3">
-                <input type="text" class="form-control">
+                <input type="password" class="form-control">
             </div>
             <div>
                 <label class="btn btn-primary" @click="login()"> 登入</label>
@@ -17,6 +17,7 @@
 <script>
 import { defineComponent, useContext, ref, useRouter } from '@nuxtjs/composition-api'
 export default defineComponent({
+    layout: 'login',
     setup() {
         const { $axios } = useContext()
         const account = ref(null)

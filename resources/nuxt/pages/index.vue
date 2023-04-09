@@ -83,11 +83,12 @@
 </template>
 
 <script>
-import { computed, defineComponent, useContext, ref } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useContext, ref, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
     const { $swal, $axios } = useContext()
+    const router = useRouter()
     const allCarList = ref(null)
     const getAllCarList = () => {
       $axios.get('api/welcome')
@@ -110,11 +111,13 @@ export default defineComponent({
         detailHide.value = true
       }
     }
+
     return {
       dont,
       allCarList,
       detailHide,
       turnDetail
+
     }
   }
 
@@ -123,7 +126,7 @@ export default defineComponent({
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .app-button {
   position: relative;
   display: inline-flex;
