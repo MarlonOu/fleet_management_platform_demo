@@ -60,6 +60,9 @@ Route::resource('/getDiverInformation', Diver_information_123_Controller::class)
 
 
 
+Route::resource('test', TestApi::class);
+
+
 
 
 
