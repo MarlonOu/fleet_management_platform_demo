@@ -11,6 +11,7 @@ use App\Models\Vehicle_realtime_information_123;
 use App\Models\Diver_information_123;
 use App\Models\Commercial_vehicle_specification_123;
 use App\Http\Controllers\Diver_information_123_Controller;
+use App\Http\Controllers\UploadVehicleRealtimeInformationController;
 
 
 /*
@@ -61,6 +62,7 @@ Route::resource('/getDiverInformation', Diver_information_123_Controller::class)
 
 
 Route::resource('test', TestApi::class);
+Route::resource('uploadVehicleRealtimeInformation', UploadVehicleRealtimeInformationController::class);
 
 
 
