@@ -76,7 +76,8 @@ class UploadVehicleRealtimeInformationController extends Controller
         $terminalData = $request->all();
         $terminalDataList = explode(";", $terminalData['data']);
         $taxid = $terminalDataList[0];
-        $carRealtimeData = $terminalDataList[3];
+        $carRealtimeData = str_replace('\'', '"', $terminalDataList[3]);
+        $carRealtimeData = json_decode($carRealtimeData, true);
 
         DB::table($taxid.'_vehicle_realtime_information')
         ->where('vehicle_number', $vehicle_number)
@@ -84,7 +85,7 @@ class UploadVehicleRealtimeInformationController extends Controller
             'altitude' => $carRealtimeData['altitude'],
             'latitude' => $carRealtimeData['latitude'],
             'longitude' => $carRealtimeData['longitude'],
-            'can_date_time' => $carRealtimeData['can_date_time'],
+            'date_time' => $carRealtimeData['date_time'],
             'speed' => $carRealtimeData['speed'],
             'engine_speed' => $carRealtimeData['engine_speed'],
             'app1' => $carRealtimeData['app1'],
@@ -96,7 +97,7 @@ class UploadVehicleRealtimeInformationController extends Controller
             'idle_hours' => $carRealtimeData['idle_hours'],
             'idle_fuel' => $carRealtimeData['idle_fuel'],
             'brake_state' => $carRealtimeData['brake_state'],
-            'ap1_lis' => $carRealtimeData['ap1_lis'],
+            'ap1_lis' => $carRealtimeData['ap1_lis']
             ]);
         
         return response()->json($carRealtimeData);
