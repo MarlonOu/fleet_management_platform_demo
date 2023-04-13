@@ -12,6 +12,7 @@ use App\Models\Diver_information_123;
 use App\Models\Commercial_vehicle_specification_123;
 use App\Http\Controllers\Diver_information_123_Controller;
 use App\Http\Controllers\UploadVehicleRealtimeInformationController;
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -63,6 +64,17 @@ Route::resource('/getDiverInformation', Diver_information_123_Controller::class)
 
 Route::resource('test', TestApi::class);
 Route::resource('uploadVehicleRealtimeInformation', UploadVehicleRealtimeInformationController::class);
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('/register',    [AuthController::class, 'register']);       // 使用者註冊
+    Route::post('/login',       [AuthController::class, 'login']);          // 使用者登入 (回傳 JWT token 及使用者資訊)
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);    // 以 JWT token 取得使用者資訊
+    Route::post('/refresh',     [AuthController::class, 'refresh']);        // 更新 JWT token
+    Route::post('/logout',      [AuthController::class, 'logout']);         // 使用者登出，移除 JWT token
+});
 
 
 
