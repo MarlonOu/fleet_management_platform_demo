@@ -17,3 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/pusher', function () {
+    return view('pusher');
+});
+
+
+
+Route::get('/test', function () {
+    event(new App\Events\MessageSent('websolutionstuff_team'));
+    return "Event has been sent!";
+});
