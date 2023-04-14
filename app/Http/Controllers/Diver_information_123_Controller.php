@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Diver_information_123;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 
 class Diver_information_123_Controller extends Controller
@@ -12,9 +14,21 @@ class Diver_information_123_Controller extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
     public function index()
     {
         return  Diver_information_123::all();
+//        $user = auth()->user();
+//        $id=$user['id'];
+//        return $id;
+//        $tax_id = DB::table('123_driver_information')->where('id', '=', $id)->pluck('tax_id');
+//        $datas = DB::table($taxid.'_vehicle_realtime_information')->get();
+//        var_dump($datas->employ_id);
     }
 
     /**

@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class UploadVehicleRealtimeInformationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
     public function index()
     {
         //
@@ -29,27 +37,42 @@ class UploadVehicleRealtimeInformationController extends Controller
     public function store(Request $request)
     {
         $form = $request->all();
-        $terminalDataList = explode(",", $form);
-        $taxid = $terminalDataList[0];
-        DB::table($taxid.'_vehicle_realtime_information')->insert([
-            'altitude' => $form['altitude'],
-            'latitude' => $form['latitude'],
-            'longitude' => $form['longitude'],
-            'can_date_time' => $form['can_date_time'],
-            'speed' => $form['speed'],
-            'engine_speed' => $form['engine_speed'],
-            'app1' => $form['app1'],
-            'bpp' => $form['bpp'],
-            'torque' => $form['torque'],
-            'instant_fuel' => $form['instant_fuel'],
-            'average_fuel' => $form['average_fuel'],
-            'odo_mileage' => $form['odo_mileage'],
-            'idle_hours' => $form['idle_hours'],
-            'idle_fuel' => $form['idle_fuel'],
-            'brake_state' => $form['brake_state'],
-            'ap1_lis' => $form['ap1_lis'],
-            ]);
-        return response()->json($form);
+//        $terminalDataList = explode(",", $form);
+//        $taxid = $terminalDataList[0];
+//        DB::table($taxid.'_vehicle_realtime_information')->insert([
+//            'altitude' => $form['altitude'],
+//            'latitude' => $form['latitude'],
+//            'longitude' => $form['longitude'],
+//            'can_date_time' => $form['can_date_time'],
+//            'speed' => $form['speed'],
+//            'engine_speed' => $form['engine_speed'],
+//            'app1' => $form['app1'],
+//            'bpp' => $form['bpp'],
+//            'torque' => $form['torque'],
+//            'instant_fuel' => $form['instant_fuel'],
+//            'average_fuel' => $form['average_fuel'],
+//            'odo_mileage' => $form['odo_mileage'],
+//            'idle_hours' => $form['idle_hours'],
+//            'idle_fuel' => $form['idle_fuel'],
+//            'brake_state' => $form['brake_state'],
+//            'ap1_lis' => $form['ap1_lis'],
+//            ]);
+//        return response()->json($form);
+
+
+        $user = auth()->user();
+
+        $id=$user['id'];
+        $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
+
+        $idd = $tax_id[0];
+        $datas = DB::table($idd.'_driver_information')->get();
+//        foreach ($datas as $data)
+//        {
+//            var_dump($datas->id);
+//        }
+        echo collect($datas);
+       // echo $users->tax_id;
     }
 
     /**
@@ -79,6 +102,7 @@ class UploadVehicleRealtimeInformationController extends Controller
         $carRealtimeData = str_replace('\'', '"', $terminalDataList[3]);
         $carRealtimeData = json_decode($carRealtimeData, true);
 
+
         DB::table($taxid.'_vehicle_realtime_information')
         ->where('vehicle_number', $vehicle_number)
         ->update([
@@ -99,7 +123,7 @@ class UploadVehicleRealtimeInformationController extends Controller
             'brake_state' => $carRealtimeData['brake_state'],
             'ap1_lis' => $carRealtimeData['ap1_lis']
             ]);
-        
+
         return response()->json($carRealtimeData);
     }
 
@@ -111,3 +135,5 @@ class UploadVehicleRealtimeInformationController extends Controller
         //
     }
 }
+
+
