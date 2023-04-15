@@ -11,6 +11,11 @@ use App\Models\Vehicle_realtime_information_123;
 use App\Models\Diver_information_123;
 use App\Models\Commercial_vehicle_specification_123;
 use App\Http\Controllers\Diver_information_123_Controller;
+use App\Http\Controllers\CommercialVehicleSpecification_123;
+use App\Http\Controllers\DriverBehaviorStatistics_123;
+use App\Http\Controllers\FleetOwnerInformation_123;
+use App\Http\Controllers\VehicleAndDriverBindingRegistrationInformation_123;
+use App\Http\Controllers\VehicleAttendanceRecord_123;
 use App\Http\Controllers\UploadVehicleRealtimeInformationController;
 use App\Http\Controllers\AuthController;
 
@@ -34,7 +39,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('photos', Post::class);
 Route::resource('make:model Roleest', TestApi::class);
 Route::get('/welcome', function(){
-    return  J1939_vehicle_realtime_data::all();
+    return  Vehicle_realtime_information_123::all();
    // $real_time = DB::table('j1939_vehicle_realtime_data')->get()->toJson();
    // echo $real_time;
 });
@@ -50,6 +55,8 @@ Route::get('/getVehicleRealtimeStatus', function(){
     return  Vehicle_realtime_information_123::all();
 });
 
+
+
 Route::get('/getVehicleRealtimeInformation', function(){
     return  Vehicle_realtime_information_123::all();
 });
@@ -59,6 +66,13 @@ Route::get('/getCommercialVehicleSpecification', function(){
 });
 
 Route::resource('/getDiverInformation', Diver_information_123_Controller::class);
+
+//Route::resource('/getCommercialVehicleSpecification', CommercialVehicleSpecification_123::class);
+//Route::resource('/getDriverBehaviorStatistics', DriverBehaviorStatistics_123::class);
+//Route::resource('/getFleetOwnerInformation', FleetOwnerInformation_123::class);
+//Route::resource('/getVehicleAndDriverBindingRegistrationInformation', VehicleAndDriverBindingRegistrationInformation_123::class);
+//Route::resource('/getVehicleAttendanceRecord', VehicleAttendanceRecord_123::class);
+
 
 
 

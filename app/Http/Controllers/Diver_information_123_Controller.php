@@ -20,6 +20,8 @@ class Diver_information_123_Controller extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
+
+
     public function index()
     {
         return  Diver_information_123::all();
@@ -45,19 +47,37 @@ class Diver_information_123_Controller extends Controller
     public function store(Request $request)
     {
         $form = $request->all();
+        $user = auth()->user();
+        $id=$user['id'];
+        $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
+        $idd = $tax_id[0];
 
-        $diver_information_123 = new Diver_information_123;
-        $diver_information_123->driver_name = $request->driver_name;
-        $diver_information_123->employ_id = $request->employ_id;
-        $diver_information_123->driver_number = $request->driver_number;
-        $diver_information_123->sex = $request->sex;
-        $diver_information_123->birthday = $request->birthday;
-        $diver_information_123->tel = $request->tel;
-        $diver_information_123->address = $request->address;
-        $diver_information_123->save();
-           //DB::table('123_driver_information')->insert(['employ_id' => $form['employ_id']]);
-           //DB::table('123_driver_information')->insert(['driver_name' => $form['driver_name']]);
-        return response ()->json($request);
+        DB::table($idd.'_driver_information')
+            ->insert([
+                'driver_name' => $form['driver_name'],
+                'employ_id' => $form['employ_id'],
+                'driver_number' => $form['driver_number'],
+                'sex' => $form['sex'],
+                'birthday' => $form['birthday'],
+                'tel' => $form['tel'],
+                'address' => $form['address'],
+            ]);
+
+        return response()->json($request);
+
+//        $form = $request->all();
+//        $diver_information_123 = new Diver_information_123;
+//        $diver_information_123->driver_name = $request->driver_name;
+//        $diver_information_123->employ_id = $request->employ_id;
+//        $diver_information_123->driver_number = $request->driver_number;
+//        $diver_information_123->sex = $request->sex;
+//        $diver_information_123->birthday = $request->birthday;
+//        $diver_information_123->tel = $request->tel;
+//        $diver_information_123->address = $request->address;
+//        $diver_information_123->save();
+//           //DB::table('123_driver_information')->insert(['employ_id' => $form['employ_id']]);
+//           //DB::table('123_driver_information')->insert(['driver_name' => $form['driver_name']]);
+//        return response ()->json($request);
 
     }
 
@@ -89,16 +109,39 @@ class Diver_information_123_Controller extends Controller
 //        $diver_information_123->save();
 //        return response ()->json($request,$id);
 
-        $diver_information_123  = Diver_information_123::find($id);
-        $diver_information_123->driver_name = $request->driver_name;
-        $diver_information_123->employ_id = $request->employ_id;
-        $diver_information_123->driver_number = $request->driver_number;
-        $diver_information_123->sex = $request->sex;
-        $diver_information_123->birthday = $request->birthday;
-        $diver_information_123->tel = $request->tel;
-        $diver_information_123->address = $request->address;
-        $diver_information_123->save();
-        return response($diver_information_123);
+
+        $form = $request->all();
+        $user = auth()->user();
+        $id=$user['id'];
+        $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
+        $idd = $tax_id[0];
+
+        DB::table($idd.'_driver_information')
+            ->where('id', $id)
+            ->update([
+                'driver_name' => $form['driver_name'],
+                'employ_id' => $form['employ_id'],
+                'driver_number' => $form['driver_number'],
+                'sex' => $form['sex'],
+                'birthday' => $form['birthday'],
+                'tel' => $form['tel'],
+                'address' => $form['address'],
+            ]);
+
+        return response()->json($request);
+
+
+
+//        $diver_information_123  = Diver_information_123::find($id);
+//        $diver_information_123->driver_name = $request->driver_name;
+//        $diver_information_123->employ_id = $request->employ_id;
+//        $diver_information_123->driver_number = $request->driver_number;
+//        $diver_information_123->sex = $request->sex;
+//        $diver_information_123->birthday = $request->birthday;
+//        $diver_information_123->tel = $request->tel;
+//        $diver_information_123->address = $request->address;
+//        $diver_information_123->save();
+//        return response($diver_information_123);
     }
 
     /**
@@ -109,3 +152,5 @@ class Diver_information_123_Controller extends Controller
         //
     }
 }
+
+
