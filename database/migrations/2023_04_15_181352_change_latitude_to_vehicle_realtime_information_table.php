@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('tax_id')->nullable()->change();
+        Schema::table('123_vehicle_realtime_information', function (Blueprint $table) {
+            $table->float('latitude')->nullable()->change();
+            $table->float('longitude')->nullable()->change();
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('123_vehicle_realtime_information', function (Blueprint $table) {
             //
         });
     }

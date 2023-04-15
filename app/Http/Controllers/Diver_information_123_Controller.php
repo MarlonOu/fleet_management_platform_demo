@@ -110,15 +110,15 @@ class Diver_information_123_Controller extends Controller
 
         $form = $request->all();
         $user = auth()->user();
-        $id=$user['id'];
-        $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
+        // $idd=$user['id'];
+        $tax_id = DB::table('users')->where('id', '=', $user['id'])->pluck('tax_id');
 
         DB::table($tax_id[0].'_driver_information')
             ->where('id', $id)
             ->update([
                 'driver_name' => $form['driver_name'],
                 'employ_id' => $form['employ_id'],
-                'driver_number' => $form['driver_number'],
+              //  'driver_number' => $form['driver_number'],
                 'sex' => $form['sex'],
                 'birthday' => $form['birthday'],
                 'tel' => $form['tel'],

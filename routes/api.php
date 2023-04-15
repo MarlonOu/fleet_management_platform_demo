@@ -18,7 +18,7 @@ use App\Http\Controllers\VehicleAndDriverBindingRegistrationInformation_123;
 use App\Http\Controllers\VehicleAttendanceRecord_123;
 use App\Http\Controllers\UploadVehicleRealtimeInformationController;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\GetVehicleRealInformationDetail;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,7 +73,7 @@ Route::resource('/getDiverInformation', Diver_information_123_Controller::class)
 //Route::resource('/getVehicleAndDriverBindingRegistrationInformation', VehicleAndDriverBindingRegistrationInformation_123::class);
 //Route::resource('/getVehicleAttendanceRecord', VehicleAttendanceRecord_123::class);
 
-
+Route::resource('/getvehiclerealinformationdetail', GetVehicleRealInformationDetail::class);
 
 
 Route::resource('test', TestApi::class);
