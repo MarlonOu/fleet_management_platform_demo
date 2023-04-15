@@ -61,17 +61,16 @@ class UploadVehicleRealtimeInformationController extends Controller
 
 
         $user = auth()->user();
-
         $id=$user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
-
         $idd = $tax_id[0];
         $datas = DB::table($idd.'_driver_information')->get();
 //        foreach ($datas as $data)
 //        {
 //            var_dump($datas->id);
 //        }
-        echo collect($datas);
+        $data_json_en = json_encode($datas);
+        echo ($data_json_en);
        // echo $users->tax_id;
     }
 
