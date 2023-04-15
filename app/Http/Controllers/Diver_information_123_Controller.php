@@ -50,9 +50,8 @@ class Diver_information_123_Controller extends Controller
         $user = auth()->user();
         $id=$user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
-        $idd = $tax_id[0];
 
-        DB::table($idd.'_driver_information')
+        DB::table($tax_id[0].'_driver_information')
             ->insert([
                 'driver_name' => $form['driver_name'],
                 'employ_id' => $form['employ_id'],
@@ -114,9 +113,8 @@ class Diver_information_123_Controller extends Controller
         $user = auth()->user();
         $id=$user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
-        $idd = $tax_id[0];
 
-        DB::table($idd.'_driver_information')
+        DB::table($tax_id[0].'_driver_information')
             ->where('id', $id)
             ->update([
                 'driver_name' => $form['driver_name'],

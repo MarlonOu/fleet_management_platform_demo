@@ -20,7 +20,11 @@ class UploadVehicleRealtimeInformationController extends Controller
     }
     public function index()
     {
-        //
+        $user = auth()->user();
+        $id=$user['id'];
+        $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
+        $datas = DB::table($tax_id[0].'_vehicle_realtime_information')->get();
+        return response()->json($datas);
     }
 
     /**
@@ -64,7 +68,7 @@ class UploadVehicleRealtimeInformationController extends Controller
         $id=$user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id');
         $idd = $tax_id[0];
-        $datas = DB::table($idd.'_driver_information')->get();
+        $datas = DB::table($idd.'_vehicle_realtime_information')->get();
         return response()->json($datas);
     }
 
