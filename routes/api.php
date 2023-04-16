@@ -55,8 +55,6 @@ Route::get('/getVehicleRealtimeStatus', function(){
     return  Vehicle_realtime_information_123::all();
 });
 
-
-
 Route::get('/getVehicleRealtimeInformation', function(){
     return  Vehicle_realtime_information_123::all();
 });
@@ -73,10 +71,9 @@ Route::resource('/getDiverInformation', Diver_information_123_Controller::class)
 //Route::resource('/getVehicleAndDriverBindingRegistrationInformation', VehicleAndDriverBindingRegistrationInformation_123::class);
 //Route::resource('/getVehicleAttendanceRecord', VehicleAttendanceRecord_123::class);
 
-Route::resource('/getVehicleRealtimeDetailInformation', GetVehicleRealtimeDetailInformationController::class);
 
+Route::resource('/getVehicleDetailInformation', GetVehicleRealtimeDetailInformationController::class);
 
-Route::resource('test', TestApi::class);
 Route::resource('uploadVehicleRealtimeInformation', UploadVehicleRealtimeInformationController::class);
 
 Route::group([
@@ -89,10 +86,6 @@ Route::group([
     Route::post('/refresh',     [AuthController::class, 'refresh']);        // 更新 JWT token
     Route::post('/logout',      [AuthController::class, 'logout']);         // 使用者登出，移除 JWT token
 });
-
-
-
-
 
 
 

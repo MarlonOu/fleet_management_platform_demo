@@ -42,32 +42,32 @@ class GetVehicleRealtimeDetailInformationController extends Controller
         $task_start_time = DB::table($tax_id . '_vehicle_attendance_record')->where('vehicle_number', '=', $vehicle_number)->pluck('task_start_time')[0];
         $time = $realtime_time - $task_start_time;
         $task_overtime = '';
-        if (($time/3600) < 8) 
+        if (($time / 3600) < 8)
             $task_overtime = '無超時駕駛';
-        else{
+        else {
             //$task_overtime = '超時駕駛'.date('Y-m-d H:i:s', ($time));
-            $day = floor($time / (3600*24));
-            $second = $time % (3600*24);
+            $day = floor($time / (3600 * 24));
+            $second = $time % (3600 * 24);
             $hour = floor($second / 3600);
             $second = $second % 3600;
             $minute = floor($second / 60);
             $second = $second % 60;
-            $task_overtime = '已超時駕駛'.$day.'天'.$hour.'小時'.$minute.'分鐘'.$second.'秒';
+            $task_overtime = '已超時駕駛' . $day . '天' . $hour . '小時' . $minute . '分鐘' . $second . '秒';
         }
-        
+
         // $datas = DB::table($tax_id[0].'_vehicle_realtime_information')->get();
         //return response()->json($datas);
         $vehicalRealtimeDetailInformation = array(
-            'driver_name' => $driver_name,  
+            'driver_name' => $driver_name,
             'licence_plate' => $licence_plate,
-            'speed' => $speed, 
+            'speed' => $speed,
             'milage' => $milage,
             'time' => $time,
             'task_overtime' => $task_overtime,
             'engine_speed' => $engine_speed,
             'odo_mileage' => $odo_mileage,
             'instant_fuel' => $instant_fuel
-          ); 
+        );
         return response()->json($vehicalRealtimeDetailInformation);
     }
 
