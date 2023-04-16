@@ -3,10 +3,10 @@
         <div class="login">
             <h4 class="text-center mt-0 mb-3">登入</h4>
             <div class="mb-3">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" v-model="email">
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control">
+                <input type="password" class="form-control" v-model="password">
             </div>
             <div>
                 <label class="btn btn-primary" @click="login()"> 登入</label>
@@ -20,17 +20,18 @@ export default defineComponent({
     layout: 'login',
     setup() {
         const { $axios } = useContext()
-        const account = ref(null)
-        const password = ref(null)
+        const email = ref('aaa@gmail.com')
+        const password = ref('aaaaaa')
         const router = useRouter()
         const login = () => {
             const payload = {
-                name: account.value,
+                email: email.value,
                 password: password.value
             }
-            $axios.post('platformUserInformation', payload)
+            $axios.post('api/auth/login', payload)
                 .then(({ data }) => {
-                    router.push('/')
+                    localStorage.setItem('auth', data.original.access_token)
+
                 })
                 .catch((e) => {
                     console.log(e)
@@ -41,7 +42,7 @@ export default defineComponent({
         }
 
         return {
-            account,
+            email,
             password,
             login
         }

@@ -1,7 +1,12 @@
-export default function ({ $axios, redirect }) {
-    $axios.onError(error => {
-        if (error.response.status === 500) {
-            redirect('/')
-        }
-    })
+import axios from 'axios'
+
+export default function (ctx, inject) {
+    axios.defaults.baseURL = 'http://127.0.0.1:8000'
+    axios.defaults.headers.common['Authorization'] = 'bearer ' + localStorage.getItem('auth')
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+
+    /* 注入 Nuxt Instance Property */
+    ctx.$axios = axios
+
+    inject('axios', axios)
 }

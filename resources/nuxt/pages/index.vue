@@ -3,34 +3,69 @@
     <div class="row">
       <div :class="{ 'col-sm-12': detailHide, 'col-sm-8': !detailHide }">
         <div style="height:50vh">
-          <Map></Map>
+          <Map :setLocation="allCarList"></Map>
         </div>
-        <div style="height: 5vh">
-          <button @click="turnDetail()"><span v-if="detailHide">縮小</span><span v-else>放大</span></button>
-        </div>
-        <div class="bg-success" style="height:45vh">
-          <table style="width: 100%" class="text-white">
+
+        <div class="bg-success" style="height:50vh">
+          <div class="row py-3">
+            <div class="col-3">
+              <select class="form-select" v-model="selects">
+                <option :value="null" disabled>
+                  請選擇車輛
+                </option>
+                <option v-for="car in getRunCar" :key="car.driver_number" :value="car.driver_number">
+                  車輛編號{{ car.driver_number }}
+                  <span v-if="getSelects.includes(car.driver_number)" style="color: #ff3c00;">(已選)</span>
+                </option>
+              </select>
+            </div>
+            <div class="col-3">
+              <label class="btn btn-danger" @click="deleteCars()">清除</label>
+            </div>
+          </div>
+          <table style="width: 100%" class="text-white text-center">
             <tr>
-              <th>狀態</th>
-              <th>狀態</th>
-              <th>狀態</th>
-              <th>行駛時間</th>
+              <th>查看</th>
+              <th>駕駛人姓名</th>
               <th>車號</th>
-              <th>駕駛人</th>
+              <th>排放標準</th>
               <th>時速</th>
-              <th>地址</th>
-              <th>圍籬</th>
+              <th>行駛里程數</th>
+              <th>時間</th>
             </tr>
-            <tr v-for="carList in allCarList">
-              <!-- 要放V-FOR -->
+            <tr v-if="getRunCarsDetails.length > 0" v-for="carList in getRunCarsDetails">
               <td>
-                {{ carList }}
+                <button class="btn btn-primary" @click="turnDetail(carList.driver_number)">查看</button>
               </td>
+              <td>
+                {{ carList.driver_number }}
+              </td>
+              <td>
+                {{ carList.vehicle_number }}
+              </td>
+              <td>
+                {{ carList.Emission_standards }}
+              </td>
+              <td>
+                {{ carList.speed }}
+              </td>
+              <td>
+                {{ carList.odo_mileage }}
+              </td>
+              <td>
+                {{ carList.date_time }}
+              </td>
+
             </tr>
           </table>
         </div>
       </div>
       <div v-if="!detailHide" class="col-sm-4" style="height:100vh; overflow-y:scroll">
+        <div class="text-end fw-bold mt-4">
+          <span @click="turnDetail()" class="p-3" style="cursor: pointer;">
+            <b>X</b>
+          </span>
+        </div>
         <h4>車輛狀態</h4>
         時速: <br>
         車隊: <br>
@@ -39,84 +74,145 @@
         <h4>車隊即時數據</h4>
         <div class="row text-center">
           <div class="col-sm-6" style="height: 150px">
-            引擎冷卻液
-          </div>
-          <div class="col-sm-6" style="height: 150px">
-            總里程數
-          </div>
-        </div>
-        <div class="row text-center">
-          <div class="col-sm-6" style="height: 150px">
             時速
           </div>
           <div class="col-sm-6" style="height: 150px">
-            限速功能狀態
+            轉速
           </div>
         </div>
         <div class="row text-center">
           <div class="col-sm-6" style="height: 150px">
-            機油油位
+            總里程
           </div>
-          <div class="col-sm-6" style="height: 150px">
-            限時油耗
-          </div>
-        </div>
-        <div class="row text-center">
           <div class="col-sm-6" style="height: 150px">
             平均油耗
           </div>
-          <div class="col-sm-6" style="height: 150px">
-            引擎轉速
-          </div>
         </div>
-        <div class="row text-center">
-          <div class="col-sm-6" style="height: 150px">
-            引擎油溫
-          </div>
-          <div class="col-sm-6" style="height: 150px">
-            煞車壓力
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, defineComponent, useContext, ref, useRouter } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useContext, ref, useRouter, nextTick, watch } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
     const { $swal, $axios } = useContext()
     const router = useRouter()
-    const allCarList = ref(null)
-    const getAllCarList = () => {
-      $axios.get('api/welcome')
+    const allCarList = ref([])
+    const allCarLocation = ref(null)
+    const loading = ref(false)
+    const getAllCarLocation = () => {
+      $axios.get('api/getVehicleRealtimeStatus')
         .then(({ data }) => {
           allCarList.value = data
+          nextTick(() => {
+            getAll()
+          })
         })
         .catch((e) => {
           console.log(e)
         })
     }
-    getAllCarList()
+    getAllCarLocation()
+    const getNowAllCarLocation = () => {
+      loading.value = true
+      $axios.get('api/uploadVehicleRealtimeInformation')
+        .then(({ data }) => {
+          allCarList.value = data
+
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+        .finally(() => {
+          loading.value = false
+        })
+    }
     const dont = () => {
       $swal("Success!", "Transaction was successful", "success");
     }
     const detailHide = ref(true)
-    const turnDetail = () => {
+    const getRunDetail = ref('')
+    const turnDetail = (val) => {
+      if (val) {
+        $axios.get(`api/getVehicalDetailInformation/${val}`)
+          .then(({ data }) => {
+            getRunDetail.value = data
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      }
       if (detailHide.value) {
         detailHide.value = false
       } else {
         detailHide.value = true
       }
     }
+    const getAll = () => {
+      setInterval(() => {
+        if (!loading.value) {
+          getNowAllCarLocation()
+        }
+      }, "150000");
+    }
+    const getRunCar = computed(() => {
+      const all = allCarList.value
+      const car = []
+      all.forEach((value, index) => {
+        if (value.vehicle_status === 1) {
+          car.push(value)
+        }
+      })
+      return car
+    })
+    const selects = ref(null)
+    const getSelects = ref([])
+    const getRunCarsDetails = computed(() => {
+      const getSelect = getSelects.value
+      const allCar = allCarList.value
+      const getCarsDetails = []
+      allCar.forEach((value, index) => {
+        if (getSelect[index]) {
+          if (value.driver_number === getSelect[index]) {
+            getCarsDetails.push(allCar[index])
+          }
+        }
+      })
+      return getCarsDetails
+    })
+
+
+
+    watch(selects, (val) => {
+      if (val != null) {
+        getSelects.value.push(val)
+      }
+    })
+    const deleteCars = () => {
+      selects.value = null
+      getSelects.value = []
+
+    }
 
     return {
       dont,
       allCarList,
       detailHide,
-      turnDetail
+      turnDetail,
+      getAllCarLocation,
+      allCarLocation,
+      loading,
+      getNowAllCarLocation,
+      getAll,
+      getRunCar,
+      selects,
+      getSelects,
+      getRunCarsDetails,
+      deleteCars
 
     }
   }
@@ -126,7 +222,18 @@ export default defineComponent({
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+table {
+  border-collapse: collapse;
+
+}
+
+td {
+
+  padding: 5px;
+}
+
+
 .app-button {
   position: relative;
   display: inline-flex;
@@ -147,6 +254,6 @@ export default defineComponent({
 }
 
 .GMap__Wrapper {
-  height: 50vh;
+  height: 50vh !important;
 }
 </style>
