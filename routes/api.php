@@ -19,6 +19,7 @@ use App\Http\Controllers\VehicleAttendanceRecord_123;
 use App\Http\Controllers\UploadVehicleRealtimeInformationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetVehicleRealtimeDetailInformationController;
+use App\Http\Controllers\AllVehicleInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,7 @@ Route::resource('/getDiverInformation', Diver_information_123_Controller::class)
 Route::resource('/getVehicleDetailInformation', GetVehicleRealtimeDetailInformationController::class);
 
 Route::resource('uploadVehicleRealtimeInformation', UploadVehicleRealtimeInformationController::class);
+Route::resource('allVehicleInformation', AllVehicleInformationController::class);
 
 Route::group([
     'middleware' => 'api',
