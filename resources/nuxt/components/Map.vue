@@ -1,16 +1,16 @@
 <template>
-    <div v-if="setLocation.length > 0">
+    <div>
         <GMap ref="gMap" language="cn" :cluster="{ options: { styles: clusterStyle } }"
-            :center="{ lat: 23.0255745527596, lng: 120.22629531746722 }" :options="{ fullscreenControl: false }" :zoom="8">
+            :center="{ lat: 23.0255745527596, lng: 120.22629531746722 }" :options="{ fullscreenControl: false }" :zoom="6">
             <GMapMarker v-for="(location, index) in locations" :key="location.id" style="width: 100px; height: 100px;"
-                :position="{ lat: location.lng, lng: location.lat }"
+                :position="{ lat: location.lat, lng: location.lng }"
                 :options="{ icon: location === locations[index] ? pins.selected : pins.notSelected }"
                 @click="currentLocation = location">
                 <GMapInfoWindow :options="{ maxWidth: 200 }">
                     <code>
-                                                                                                                                                                                                                                                                                                            lat: {{ location.lng }},
-                                                                                                                                                                                                                                                                                                            lng: {{ location.lat }}
-                                                                                                                                                                                                                                                                                                          </code>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                lat: {{ location.lat }},
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                lng: {{ location.lng }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </code>
                 </GMapInfoWindow>
             </GMapMarker>
             <GMapCircle />
@@ -80,6 +80,11 @@ export default {
     watch: {
         setLocation(val) {
             this.locations = val
+            this.$nextTick(() => {
+                this.$refs.gMap.initChildren()
+            })
+
+
         }
     }
 }
