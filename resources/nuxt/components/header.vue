@@ -10,7 +10,7 @@
                 </li>
                 <div class="d-flex">
                     <li class="nav-item nav-link">
-                        歐隆祺您好
+                        {{ user }}您好
                     </li>
                     <li class="nav-item mx-2 nav-link">
                         <NuxtLink v-if="route.path === '/'" to="/admin">後台管理系統</NuxtLink>
@@ -26,15 +26,21 @@
     </div>
 </template>
 <script>
-import { useRoute, defineComponent } from '@nuxtjs/composition-api'
+import { useRoute, defineComponent, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
     setup() {
         const route = useRoute()
-
-
+        const user = ref('')
+        const setUser = () => {
+            if (process.client) {
+                user.value = localStorage.getItem('user')
+            }
+        }
+        setUser()
         return {
-            route
+            route,
+            user
 
         }
     }

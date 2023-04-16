@@ -31,7 +31,7 @@ export default defineComponent({
             $axios.post('api/auth/login', payload)
                 .then(({ data }) => {
                     localStorage.setItem('auth', data.original.access_token)
-
+                    localStorage.setItem('user', data.original.user.name)
                 })
                 .catch((e) => {
                     console.log(e)
