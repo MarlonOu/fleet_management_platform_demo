@@ -60,6 +60,7 @@ class GetVehicleRealtimeDetailInformationController extends Controller
         $vehicalRealtimeDetailInformation = array(
             'driver_name' => $driver_name,
             'licence_plate' => $licence_plate,
+            'emission_standards' =>$emission_standards,
             'speed' => $speed,
             'milage' => $milage,
             'time' => $time,
