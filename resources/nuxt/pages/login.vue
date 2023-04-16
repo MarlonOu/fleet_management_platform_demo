@@ -28,9 +28,10 @@ export default defineComponent({
                 email: email.value,
                 password: password.value
             }
-            $axios.post('login', payload)
+            $axios.post('api/auth/login', payload)
                 .then(({ data }) => {
-                    console.log(data)
+                    localStorage.setItem('auth', data.original.access_token)
+
                 })
                 .catch((e) => {
                     console.log(e)
