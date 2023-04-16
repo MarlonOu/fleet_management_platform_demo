@@ -3,14 +3,14 @@
         <GMap ref="gMap" language="cn" :cluster="{ options: { styles: clusterStyle } }"
             :center="{ lat: 23.0255745527596, lng: 120.22629531746722 }" :options="{ fullscreenControl: false }" :zoom="8">
             <GMapMarker v-for="(location, index) in locations" :key="location.id" style="width: 100px; height: 100px;"
-                :position="{ lat: location.longitude, lng: location.latitude }"
+                :position="{ lat: location.lng, lng: location.lat }"
                 :options="{ icon: location === locations[index] ? pins.selected : pins.notSelected }"
                 @click="currentLocation = location">
                 <GMapInfoWindow :options="{ maxWidth: 200 }">
                     <code>
-                                                                                                                                                                                                                                                                                                    lat: {{ location.longitude }},
-                                                                                                                                                                                                                                                                                                    lng: {{ location.latitude }}
-                                                                                                                                                                                                                                                                                                  </code>
+                                                                                                                                                                                                                                                                                                            lat: {{ location.lng }},
+                                                                                                                                                                                                                                                                                                            lng: {{ location.lat }}
+                                                                                                                                                                                                                                                                                                          </code>
                 </GMapInfoWindow>
             </GMapMarker>
             <GMapCircle />

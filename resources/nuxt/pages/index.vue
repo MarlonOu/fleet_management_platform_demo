@@ -7,62 +7,55 @@
         </div>
 
         <div class="bg-success" style="height:50vh">
+          <div class="row py-3">
+            <div class="col-3">
+              <select class="form-select" v-model="selects">
+                <option :value="null" disabled>
+                  請選擇車輛
+                </option>
+                <option v-for="car in getRunCar" :key="car.driver_number" :value="car.driver_number">
+                  車輛編號{{ car.driver_number }}
+                  <span v-if="getSelects.includes(car.driver_number)" style="color: #ff3c00;">(已選)</span>
+                </option>
+              </select>
+            </div>
+            <div class="col-3">
+              <label class="btn btn-danger" @click="deleteCars()">清除</label>
+            </div>
+          </div>
           <table style="width: 100%" class="text-white text-center">
             <tr>
               <th>查看</th>
-              <th>車輛編號</th>
-              <th>駕駛人編號</th>
-              <th>駕駛行為分數</th>
-              <th>時間</th>
+              <th>駕駛人姓名</th>
+              <th>車號</th>
+              <th>排放標準</th>
               <th>時速</th>
-              <th>轉速</th>
-              <th>平均油耗</th>
-              <th>總里程</th>
-              <th>經度</th>
-              <th>緯度</th>
-              <th>海拔高度</th>
-              <th>超時工作</th>
+              <th>行駛里程數</th>
+              <th>時間</th>
             </tr>
-            <tr v-for="carList in allCarList">
+            <tr v-if="getRunCarsDetails.length > 0" v-for="carList in getRunCarsDetails">
               <td>
-                <button class="btn btn-primary" @click="turnDetail()">查看</button>
-              </td>
-              <td>
-                {{ carList.vehicle_number }}
+                <button class="btn btn-primary" @click="turnDetail(carList.driver_number)">查看</button>
               </td>
               <td>
                 {{ carList.driver_number }}
               </td>
               <td>
-                {{ carList.driving_behavior_score }}
+                {{ carList.vehicle_number }}
               </td>
               <td>
-                {{ carList.date_time }}
+                {{ carList.Emission_standards }}
               </td>
               <td>
                 {{ carList.speed }}
               </td>
               <td>
-                {{ carList.engine_speed }}
-              </td>
-              <td>
-                {{ carList.average_fuel }}
-              </td>
-              <td>
                 {{ carList.odo_mileage }}
               </td>
               <td>
-                {{ carList.longitude }}
+                {{ carList.date_time }}
               </td>
-              <td>
-                {{ carList.latitude }}
-              </td>
-              <td>
-                {{ carList.altitude }}
-              </td>
-              <td>
-                {{ carList.mil_signal }}
-              </td>
+
             </tr>
           </table>
         </div>
@@ -102,7 +95,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, useContext, ref, useRouter, nextTick } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useContext, ref, useRouter, nextTick, watch } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
@@ -126,7 +119,7 @@ export default defineComponent({
     getAllCarLocation()
     const getNowAllCarLocation = () => {
       loading.value = true
-      $axios.get('api/getVehicleRealtimeStatus')
+      $axios.get('api/uploadVehicleRealtimeInformation')
         .then(({ data }) => {
           allCarList.value = data
 
@@ -142,7 +135,17 @@ export default defineComponent({
       $swal("Success!", "Transaction was successful", "success");
     }
     const detailHide = ref(true)
-    const turnDetail = () => {
+    const getRunDetail = ref('')
+    const turnDetail = (val) => {
+      if (val) {
+        $axios.get(`api/getVehicalDetailInformation/${val}`)
+          .then(({ data }) => {
+            getRunDetail.value = data
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      }
       if (detailHide.value) {
         detailHide.value = false
       } else {
@@ -156,21 +159,45 @@ export default defineComponent({
         }
       }, "150000");
     }
-    const runCars = ref([])
-    const getRunCars = () => {
-      $axios.get('api/getVehicleRealtimeDetailInformation')
-        .then(({ data }) => {
-          runCars.value = data
+    const getRunCar = computed(() => {
+      const all = allCarList.value
+      const car = []
+      all.forEach((value, index) => {
+        if (value.vehicle_status === 1) {
+          car.push(value)
+        }
+      })
+      return car
+    })
+    const selects = ref(null)
+    const getSelects = ref([])
+    const getRunCarsDetails = computed(() => {
+      const getSelect = getSelects.value
+      const allCar = allCarList.value
+      const getCarsDetails = []
+      allCar.forEach((value, index) => {
+        if (getSelect[index]) {
+          if (value.driver_number === getSelect[index]) {
+            getCarsDetails.push(allCar[index])
+          }
+        }
+      })
+      return getCarsDetails
+    })
 
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-        .finally(() => {
-          loading.value = false
-        })
+
+
+    watch(selects, (val) => {
+      if (val != null) {
+        getSelects.value.push(val)
+      }
+    })
+    const deleteCars = () => {
+      selects.value = null
+      getSelects.value = []
+
     }
-    getRunCars()
+
     return {
       dont,
       allCarList,
@@ -181,8 +208,11 @@ export default defineComponent({
       loading,
       getNowAllCarLocation,
       getAll,
-      runCars,
-      getRunCars
+      getRunCar,
+      selects,
+      getSelects,
+      getRunCarsDetails,
+      deleteCars
 
     }
   }
