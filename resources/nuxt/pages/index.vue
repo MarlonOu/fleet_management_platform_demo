@@ -60,32 +60,41 @@
           </table>
         </div>
       </div>
-      <div v-if="!detailHide" class="col-sm-4" style="height:100vh; overflow-y:scroll">
+      <div v-if="!detailHide && getRunDetail" class="col-sm-4" style="height:100vh; overflow-y:scroll">
         <div class="text-end fw-bold mt-4">
           <span @click="turnDetail()" class="p-3" style="cursor: pointer;">
             <b>X</b>
           </span>
         </div>
         <h4>車輛狀態</h4>
-        時速: <br>
-        車隊: <br>
-        GPS: <br>
+        車號: {{ getRunDetail.licence_plate }} <br>
+        駕駛人: {{ getRunDetail.driver_name }} <br>
+        行駛時間: {{ getRunDetail.time }}<br>
+        是否超時: {{ getRunDetail.task_overtime }} <br>
         <hr>
         <h4>車隊即時數據</h4>
         <div class="row text-center">
-          <div class="col-sm-6" style="height: 150px">
+          <div class="col-sm-6" style="height: 50px">
             時速
+            <br>
+            <b>{{ getRunDetail.speed }}</b>
           </div>
-          <div class="col-sm-6" style="height: 150px">
+          <div class="col-sm-6" style="height: 50px">
             轉速
+            <br>
+            <b>{{ getRunDetail.engine_speed }}</b>
           </div>
         </div>
         <div class="row text-center">
-          <div class="col-sm-6" style="height: 150px">
+          <div class="col-sm-6" style="height: 50px">
             總里程
+            <br>
+            <b>{{ getRunDetail.odo_mileage }}</b>
           </div>
-          <div class="col-sm-6" style="height: 150px">
-            平均油耗
+          <div class="col-sm-6" style="height: 50px">
+            排放標準
+            <br>
+            <b>{{ getRunDetail.emission_standards }}</b>
           </div>
         </div>
 
@@ -135,10 +144,10 @@ export default defineComponent({
       $swal("Success!", "Transaction was successful", "success");
     }
     const detailHide = ref(true)
-    const getRunDetail = ref('')
+    const getRunDetail = ref(null)
     const turnDetail = (val) => {
       if (val) {
-        $axios.get(`api/getVehicalDetailInformation/${val}`)
+        $axios.get(`api/getVehicleDetailInformation?driver_number=${val}`)
           .then(({ data }) => {
             getRunDetail.value = data
           })
@@ -160,7 +169,7 @@ export default defineComponent({
       }, "150000");
     }
     const getRunCar = computed(() => {
-      const all = allCarList.value
+      const all = copyAllCars.value
       const car = []
       all.forEach((value, index) => {
         if (value.vehicle_status === 1) {
@@ -169,6 +178,7 @@ export default defineComponent({
       })
       return car
     })
+    const copyAllCars = ref([])
     const selects = ref(null)
     const getSelects = ref([])
     const getRunCarsDetails = computed(() => {
@@ -185,13 +195,16 @@ export default defineComponent({
       return getCarsDetails
     })
 
-
+    watch(allCarList, (val) => {
+      copyAllCars.value = JSON.parse(JSON.stringify(val))
+    })
 
     watch(selects, (val) => {
       if (val != null) {
         getSelects.value.push(val)
       }
     })
+
     const deleteCars = () => {
       selects.value = null
       getSelects.value = []
@@ -212,7 +225,9 @@ export default defineComponent({
       selects,
       getSelects,
       getRunCarsDetails,
-      deleteCars
+      deleteCars,
+      getRunDetail,
+      copyAllCars
 
     }
   }
