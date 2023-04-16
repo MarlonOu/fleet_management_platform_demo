@@ -52,9 +52,37 @@ class Post extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+public function update(Request $request, string $vehicle_number)
     {
-        //
+        $terminalData = $request->all();
+        $terminalDataList = explode(";", $terminalData['data']);
+        $taxid = $terminalDataList[0];
+        $carRealtimeData = str_replace('\'', '"', $terminalDataList[3]);
+        $carRealtimeData = json_decode($carRealtimeData, true);
+
+
+        DB::table($taxid.'_vehicle_realtime_information')
+        ->where('vehicle_number', $vehicle_number)
+        ->update([
+            'altitude' => $carRealtimeData['altitude'],
+            'lat' => $carRealtimeData['latitude'],
+            'lng' => $carRealtimeData['longitude'],
+            'date_time' => $carRealtimeData['date_time'],
+            'speed' => $carRealtimeData['speed'],
+            'engine_speed' => $carRealtimeData['engine_speed'],
+            'app1' => $carRealtimeData['app1'],
+            'bpp' => $carRealtimeData['bpp'],
+            'torque' => $carRealtimeData['torque'],
+            'instant_fuel' => $carRealtimeData['instant_fuel'],
+            'average_fuel' => $carRealtimeData['average_fuel'],
+            'odo_mileage' => $carRealtimeData['odo_mileage'],
+            'idle_hours' => $carRealtimeData['idle_hours'],
+            'idle_fuel' => $carRealtimeData['idle_fuel'],
+            'brake_state' => $carRealtimeData['brake_state'],
+            'ap1_lis' => $carRealtimeData['ap1_lis']
+            ]);
+
+        return response()->json($carRealtimeData);
     }
 
     /**

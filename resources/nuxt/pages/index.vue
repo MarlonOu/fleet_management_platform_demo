@@ -14,7 +14,7 @@
                   請選擇車輛
                 </option>
                 <option v-for="car in getRunCar" :key="car.driver_number" :value="car.driver_number">
-                  車輛編號{{ car.driver_number }}
+                  車牌號碼{{ car.licence_plate }}
                   <span v-if="getSelects.includes(car.driver_number)" style="color: #ff3c00;">(已選)</span>
                 </option>
               </select>
@@ -41,10 +41,10 @@
                 {{ carList.driver_name }}
               </td>
               <td>
-                {{ carList.vehicle_number }}
+                {{ carList.licence_plate }}
               </td>
               <td>
-                {{ carList.Emission_standards }}
+                {{ carList.emission_standards }}
               </td>
               <td>
                 {{ carList.speed }}
@@ -53,7 +53,7 @@
                 {{ carList.odo_mileage }}
               </td>
               <td>
-                {{ carList.date_time | moment('YYYY-MM-DD HH:mm:ss') }}
+                {{ carList.date_time }}
               </td>
 
             </tr>
@@ -69,7 +69,7 @@
         <h4>車輛狀態</h4>
         車號: {{ getRunCarsDetails[getIndex].licence_plate }} <br>
         駕駛人: {{ getRunCarsDetails[getIndex].driver_name }} <br>
-        行駛時間: {{ getRunCarsDetails[getIndex].time | moment('YYYY-MM-DD HH:mm:ss') }}<br>
+        行駛時間: {{ getRunCarsDetails[getIndex].time }}<br>
         是否超時: {{ getRunCarsDetails[getIndex].task_overtime }} <br>
         <hr>
         <h4>車隊即時數據</h4>
@@ -120,7 +120,7 @@ export default defineComponent({
         }
       }
 
-      $axios.get('api/uploadVehicleRealtimeInformation')
+      $axios.get('api/allVehicleInformation')
         .then(({ data }) => {
           allCarList.value = data
           nextTick(() => {
@@ -134,7 +134,7 @@ export default defineComponent({
     getAllCarLocation()
     const getNowAllCarLocation = () => {
       loading.value = true
-      $axios.get('api/uploadVehicleRealtimeInformation')
+      $axios.get('api/allVehicleInformation')
         .then(({ data }) => {
           allCarList.value = data
         })
@@ -163,7 +163,7 @@ export default defineComponent({
         if (!loading.value) {
           getNowAllCarLocation()
         }
-      }, "1500");
+      }, "3000");
     }
     const getRunCar = computed(() => {
       const all = copyAllCars.value

@@ -63,7 +63,7 @@ class AllVehicleInformationController extends Controller
             $second = $second % 3600;
             $minute = floor($second / 60);
             $second = $second % 60;
-            $time = '已駕駛' . $day . '天' . $hour . '小時' . $minute . '分鐘' . $second . '秒';
+            $time = $day . '天' . $hour . '小時' . $minute . '分鐘' . $second . '秒';
             
             $workVehicleData[$i]->date_time = date('Y-m-d H:i:s',  $workVehicleData[$i]->date_time);  
             $workVehicleData[$i]->driver_name = $driverName;
