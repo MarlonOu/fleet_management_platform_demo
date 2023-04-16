@@ -33,12 +33,12 @@
               <th>行駛里程數</th>
               <th>時間</th>
             </tr>
-            <tr v-if="getRunCarsDetails.length > 0" v-for="carList in getRunCarsDetails">
+            <tr v-if="getRunCarsDetails.length > 0" v-for="(carList, index) in getRunCarsDetails">
               <td>
-                <button class="btn btn-primary" @click="turnDetail(carList.driver_number)">查看</button>
+                <button class="btn btn-primary" @click="turnDetail(index)">查看</button>
               </td>
               <td>
-                {{ carList.driver_number }}
+                {{ carList.driver_name }}
               </td>
               <td>
                 {{ carList.vehicle_number }}
@@ -53,48 +53,48 @@
                 {{ carList.odo_mileage }}
               </td>
               <td>
-                {{ carList.date_time }}
+                {{ carList.date_time | moment('YYYY-MM-DD HH:mm:ss') }}
               </td>
 
             </tr>
           </table>
         </div>
       </div>
-      <div v-if="!detailHide && getRunDetail" class="col-sm-4" style="height:100vh; overflow-y:scroll">
+      <div v-if="!detailHide" class="col-sm-4" style="height:100vh; overflow-y:scroll">
         <div class="text-end fw-bold mt-4">
-          <span @click="turnDetail()" class="p-3" style="cursor: pointer;">
+          <span @click="turnOffDetail()" class="p-3" style="cursor: pointer;">
             <b>X</b>
           </span>
         </div>
         <h4>車輛狀態</h4>
-        車號: {{ getRunDetail.licence_plate }} <br>
-        駕駛人: {{ getRunDetail.driver_name }} <br>
-        行駛時間: {{ getRunDetail.time }}<br>
-        是否超時: {{ getRunDetail.task_overtime }} <br>
+        車號: {{ getRunCarsDetails[getIndex].licence_plate }} <br>
+        駕駛人: {{ getRunCarsDetails[getIndex].driver_name }} <br>
+        行駛時間: {{ getRunCarsDetails[getIndex].time | moment('YYYY-MM-DD HH:mm:ss') }}<br>
+        是否超時: {{ getRunCarsDetails[getIndex].task_overtime }} <br>
         <hr>
         <h4>車隊即時數據</h4>
         <div class="row text-center">
           <div class="col-sm-6" style="height: 50px">
             時速
             <br>
-            <b>{{ getRunDetail.speed }}</b>
+            <b>{{ getRunCarsDetails[getIndex].speed }}</b>
           </div>
           <div class="col-sm-6" style="height: 50px">
             轉速
             <br>
-            <b>{{ getRunDetail.engine_speed }}</b>
+            <b>{{ getRunCarsDetails[getIndex].engine_speed }}</b>
           </div>
         </div>
         <div class="row text-center">
           <div class="col-sm-6" style="height: 50px">
             總里程
             <br>
-            <b>{{ getRunDetail.odo_mileage }}</b>
+            <b>{{ getRunCarsDetails[getIndex].odo_mileage }}</b>
           </div>
           <div class="col-sm-6" style="height: 50px">
             排放標準
             <br>
-            <b>{{ getRunDetail.emission_standards }}</b>
+            <b>{{ getRunCarsDetails[getIndex].emission_standards }}</b>
           </div>
         </div>
 
@@ -114,7 +114,13 @@ export default defineComponent({
     const allCarLocation = ref(null)
     const loading = ref(false)
     const getAllCarLocation = () => {
-      $axios.get('api/getVehicleRealtimeStatus')
+      if (process.client) {
+        if (!localStorage.getItem('auth') || !localStorage.getItem('user')) {
+          router.push('/login')
+        }
+      }
+
+      $axios.get('api/uploadVehicleRealtimeInformation')
         .then(({ data }) => {
           allCarList.value = data
           nextTick(() => {
@@ -131,7 +137,6 @@ export default defineComponent({
       $axios.get('api/uploadVehicleRealtimeInformation')
         .then(({ data }) => {
           allCarList.value = data
-
         })
         .catch((e) => {
           console.log(e)
@@ -145,21 +150,13 @@ export default defineComponent({
     }
     const detailHide = ref(true)
     const getRunDetail = ref(null)
+    const getIndex = ref(null)
     const turnDetail = (val) => {
-      if (val) {
-        $axios.get(`api/getVehicleDetailInformation?driver_number=${val}`)
-          .then(({ data }) => {
-            getRunDetail.value = data
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-      }
-      if (detailHide.value) {
-        detailHide.value = false
-      } else {
-        detailHide.value = true
-      }
+      getIndex.value = val
+      detailHide.value = false
+    }
+    const turnOffDetail = () => {
+      detailHide.value = true
     }
     const getAll = () => {
       setInterval(() => {
@@ -186,11 +183,11 @@ export default defineComponent({
       const allCar = allCarList.value
       const getCarsDetails = []
       allCar.forEach((value, index) => {
-        if (getSelect[index]) {
-          if (value.driver_number === getSelect[index]) {
-            getCarsDetails.push(allCar[index])
+        getSelect.forEach((value2, index2) => {
+          if (value2 === getSelect[index]) {
+            getCarsDetails.push(value)
           }
-        }
+        })
       })
       return getCarsDetails
     })
@@ -201,15 +198,20 @@ export default defineComponent({
 
     watch(selects, (val) => {
       if (val != null) {
-        getSelects.value.push(val)
+        if (!getSelects.value.includes(val)) {
+          getSelects.value.push(val)
+        } else {
+          const index = getSelects.value.indexOf(val)
+          getSelects.value.splice(index, 1)
+        }
       }
     })
 
     const deleteCars = () => {
       selects.value = null
       getSelects.value = []
-
     }
+
 
     return {
       dont,
@@ -227,7 +229,9 @@ export default defineComponent({
       getRunCarsDetails,
       deleteCars,
       getRunDetail,
-      copyAllCars
+      copyAllCars,
+      getIndex,
+      turnOffDetail
 
     }
   }

@@ -25,6 +25,7 @@ export default {
   plugins: [
     { src: '~/plugins/axios.js', ssr: false },
     '~/plugins/vue-draggable-resizable.js',
+    '~/plugins/moment.js',
     { src: "~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", mode: "client" }
   ],
 
