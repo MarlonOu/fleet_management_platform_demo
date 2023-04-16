@@ -1,19 +1,19 @@
 <template>
-    <div>
+    <div v-if="setLocation.length > 0">
         <GMap ref="gMap" language="cn" :cluster="{ options: { styles: clusterStyle } }"
-            :center="{ lat: locations[0].lat, lng: locations[0].lng }" :options="{ fullscreenControl: false }" :zoom="6">
-            <GMapMarker v-for="(location, index) in allLocation" :key="location.id" style="width: 100px; height: 100px;"
-                :position="{ lat: location.lat, lng: location.lng }"
+            :center="{ lat: 23.0255745527596, lng: 120.22629531746722 }" :options="{ fullscreenControl: false }" :zoom="8">
+            <GMapMarker v-for="(location, index) in locations" :key="location.id" style="width: 100px; height: 100px;"
+                :position="{ lat: location.longitude, lng: location.latitude }"
                 :options="{ icon: location === locations[index] ? pins.selected : pins.notSelected }"
                 @click="currentLocation = location">
                 <GMapInfoWindow :options="{ maxWidth: 200 }">
                     <code>
-                                                                                                                                                                                                                                                                                                                                    lat: {{ location.lat }},
-                                                                                                                                                                                                                                                                                                                                    lng: {{ location.lng }}
-                                                                                                                                                                                                                                                                                                                                  </code>
+                                                                                                                                                                                                                                                                                                    lat: {{ location.longitude }},
+                                                                                                                                                                                                                                                                                                    lng: {{ location.latitude }}
+                                                                                                                                                                                                                                                                                                  </code>
                 </GMapInfoWindow>
             </GMapMarker>
-            <GMapCircle :options="circleOptions" />
+            <GMapCircle />
         </GMap>
     </div>
 </template>
@@ -24,7 +24,8 @@
 export default {
     props: {
         setLocation: {
-            default: []
+            default: [],
+            type: Array
         }
     },
     data() {

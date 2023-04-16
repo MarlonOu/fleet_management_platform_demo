@@ -108,7 +108,7 @@ export default defineComponent({
   setup() {
     const { $swal, $axios } = useContext()
     const router = useRouter()
-    const allCarList = ref(null)
+    const allCarList = ref([])
     const allCarLocation = ref(null)
     const loading = ref(false)
     const getAllCarLocation = () => {
@@ -154,10 +154,23 @@ export default defineComponent({
         if (!loading.value) {
           getNowAllCarLocation()
         }
-      }, "1500");
+      }, "150000");
     }
+    const runCars = ref([])
+    const getRunCars = () => {
+      $axios.get('api/getVehicleRealtimeDetailInformation')
+        .then(({ data }) => {
+          runCars.value = data
 
-
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+        .finally(() => {
+          loading.value = false
+        })
+    }
+    getRunCars()
     return {
       dont,
       allCarList,
@@ -167,7 +180,9 @@ export default defineComponent({
       allCarLocation,
       loading,
       getNowAllCarLocation,
-      getAll
+      getAll,
+      runCars,
+      getRunCars
 
     }
   }
