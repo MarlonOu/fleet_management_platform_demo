@@ -9,6 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         Schema::create('123_commercial_vehicle_specification', function (Blueprint $table) {

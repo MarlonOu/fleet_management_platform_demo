@@ -1,6 +1,3 @@
-@extends('layout.master')
-
-
 
 @section('content')
 <div class="row">
@@ -24,7 +21,7 @@
                 <tr>
                     <!-- 要放V-FOR -->
                     <td></td>
-                </tr>  
+                </tr>
             </table>
         </div>
     </div>
