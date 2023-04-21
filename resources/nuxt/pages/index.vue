@@ -14,7 +14,7 @@
                   請選擇車輛
                 </option>
                 <option v-for="car in getRunCar" :key="car.driver_number" :value="car.driver_number">
-                  車牌號碼{{ car.licence_plate }}
+                  {{ car.licence_plate }}
                   <span v-if="getSelects.includes(car.driver_number)" style="color: #ff3c00;">(已選)</span>
                 </option>
               </select>
