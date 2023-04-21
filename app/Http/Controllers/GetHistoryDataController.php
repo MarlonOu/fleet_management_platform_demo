@@ -42,9 +42,13 @@ class GetHistoryDataController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $vehicle_number)
     {
-        //
+        $user = auth()->user();
+        $id = $user['id'];
+        $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
+        $history_data = DB::table($tax_id.'_vehicle_history_'.$vehicle_number)->get();
+        return response()->json($history_data);
     }
 
     /**
