@@ -24,16 +24,32 @@ class GetAttendanceRecordController extends Controller
         $id = $user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
         $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where('task_status', '=', '1')->get();
-        for ($i=0; $i<sizeof($taskData); $i++){        
+        $taskInformation = array();
+        for ($i=0; $i<sizeof($taskData); $i++){          
             $driverNumber = $taskData[$i]->driver_number;
             $driverName = DB::table($tax_id . '_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
             $vehicleNumber = $taskData[$i]->vehicle_number;
             $licencePlate = DB::table($tax_id . '_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];
-            $taskData[$i]->driver_name = $driverName;
-            $taskData[$i]->licence_plate = $licencePlate;            
+            $time = $taskData[$i]->task_end_time - $taskData[$i]->task_start_time;
+            $day = floor($time / (3600 * 24));
+            $second = $time % (3600 * 24);
+            $hour = floor($second / 3600);
+            $second = $second % 3600;
+            $minute = floor($second / 60);
+            $second = $second % 60;
+            $time = $day . '天' . $hour . '小時' . $minute . '分鐘' . $second . '秒';
+
+            array_push($taskInformation, array(
+                'task_number'=> $taskData[$i]->task_number,
+                'licence_plate'=> $licencePlate,
+                'driver_name'=> $driverName,
+                'task_start_time'=> date('Y-m-d H:i:s', $taskData[$i]->task_start_time),
+                'task_end_time'=> date('Y-m-d H:i:s', $taskData[$i]->task_end_time),
+                'time'=> $time,
+            ));
         }
         
-        return response()->json($taskData);
+        return response()->json($taskInformation);
     }
 
     /**

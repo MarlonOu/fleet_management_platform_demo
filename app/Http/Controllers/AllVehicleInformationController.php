@@ -74,8 +74,6 @@ class AllVehicleInformationController extends Controller
             $workVehicleData[$i]->milage = $milage;
             $workVehicleData[$i]->time = $time;
             $workVehicleData[$i]->task_overtime = $taskOvertime;
-            $workVehicleData[$i]->licence_plate = $licencePlate;
-            $workVehicleData[$i]->licence_plate = $licencePlate;
         }
 
         return $workVehicleData;
