@@ -79,8 +79,8 @@ Route::resource('/getVehicleDetailInformation', GetVehicleRealtimeDetailInformat
 
 Route::resource('uploadVehicleRealtimeInformation', UploadVehicleRealtimeInformationController::class);
 Route::resource('allVehicleInformation', AllVehicleInformationController::class);
-Route::resource('GetAttendanceRecordController', GetAttendanceRecordController::class);
-Route::resource('GetHistoryDataController', GetHistoryDataController::class);
+Route::resource('get-attendance-record', GetAttendanceRecordController::class);
+Route::resource('get-history-data', GetHistoryDataController::class);
 
 
 Route::group([

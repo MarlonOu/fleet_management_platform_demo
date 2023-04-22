@@ -23,8 +23,17 @@ class GetAttendanceRecordController extends Controller
         $user = auth()->user();
         $id = $user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
-        $task_status = DB::table($tax_id.'_vehicle_attendance_record')->where('task_status', '=', '1')->get();
-        return response()->json($task_status);
+        $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where('task_status', '=', '1')->get();
+        for ($i=0; $i<sizeof($taskData); $i++){        
+            $driverNumber = $taskData[$i]->driver_number;
+            $driverName = DB::table($tax_id . '_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
+            $vehicleNumber = $taskData[$i]->vehicle_number;
+            $licencePlate = DB::table($tax_id . '_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];
+            $taskData[$i]->driver_name = $driverName;
+            $taskData[$i]->licence_plate = $licencePlate;            
+        }
+        
+        return response()->json($taskData);
     }
 
     /**
