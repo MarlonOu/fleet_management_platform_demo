@@ -64,7 +64,9 @@ class AllVehicleInformationController extends Controller
             $minute = floor($second / 60);
             $second = $second % 60;
             $time = $day . '天' . $hour . '小時' . $minute . '分鐘' . $second . '秒';
-            
+
+            $workVehicleData[$i]->lng = $workVehicleData[$i]->longitude;  
+            $workVehicleData[$i]->lat = $workVehicleData[$i]->latitude;  
             $workVehicleData[$i]->date_time = date('Y-m-d H:i:s',  $workVehicleData[$i]->date_time);  
             $workVehicleData[$i]->driver_name = $driverName;
             $workVehicleData[$i]->licence_plate = $licencePlate;
@@ -72,8 +74,6 @@ class AllVehicleInformationController extends Controller
             $workVehicleData[$i]->milage = $milage;
             $workVehicleData[$i]->time = $time;
             $workVehicleData[$i]->task_overtime = $taskOvertime;
-            $workVehicleData[$i]->licence_plate = $licencePlate;
-            $workVehicleData[$i]->licence_plate = $licencePlate;
         }
 
         return $workVehicleData;

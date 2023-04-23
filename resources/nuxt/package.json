@@ -9,6 +9,8 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "chart.js": "2.9.4",
+    "vue-chartjs": "^3.5.1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/composition-api": "^0.33.1",
     "bootstrap": "^5.2.3",

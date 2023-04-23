@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('123_vehicle_realtime_information', function (Blueprint $table) {
-            $table->renameColumn('latitude', 'lat');
-            $table->renameColumn('longitude', 'lng');
+        Schema::table('123_vehicle_attendance_record', function (Blueprint $table) {
+            $table->renameColumn('id', 'task_number');
         });
     }
 
@@ -22,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('123_vehicle_realtime_information', function (Blueprint $table) {
+        Schema::table('123_vehicle_attendance_record', function (Blueprint $table) {
             //
         });
     }

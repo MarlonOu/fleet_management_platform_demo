@@ -52,7 +52,7 @@ class Post extends Controller
     /**
      * Update the specified resource in storage.
      */
-public function update(Request $request, string $vehicle_number)
+    public function update(Request $request, string $vehicle_number)
     {
         $terminalData = $request->all();
         $terminalDataList = explode(";", $terminalData['data']);

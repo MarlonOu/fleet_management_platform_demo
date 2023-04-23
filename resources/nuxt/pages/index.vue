@@ -9,12 +9,12 @@
         <div class="bg-success" style="height:50vh">
           <div class="row py-3">
             <div class="col-3">
-              <select class="form-select" v-model="selects">
+              <select class="form-select" v-model="selects" @change="listenSelects">
                 <option :value="null" disabled>
                   請選擇車輛
                 </option>
                 <option v-for="car in getRunCar" :key="car.driver_number" :value="car.driver_number">
-                  車牌號碼{{ car.licence_plate }}
+                  {{ car.licence_plate }}
                   <span v-if="getSelects.includes(car.driver_number)" style="color: #ff3c00;">(已選)</span>
                 </option>
               </select>
@@ -184,8 +184,8 @@ export default defineComponent({
       const getCarsDetails = []
       allCar.forEach((value, index) => {
         getSelect.forEach((value2, index2) => {
-          if (value2 === getSelect[index]) {
-            getCarsDetails.push(value)
+          if (value2 === allCar[index].driver_number) {
+            getCarsDetails.push(allCar[index])
           }
         })
       })
@@ -196,7 +196,14 @@ export default defineComponent({
       copyAllCars.value = JSON.parse(JSON.stringify(val))
     })
 
-    watch(selects, (val) => {
+
+    const deleteCars = () => {
+      selects.value = null
+      getSelects.value = []
+    }
+
+    const listenSelects = () => {
+      const val = selects.value
       if (val != null) {
         if (!getSelects.value.includes(val)) {
           getSelects.value.push(val)
@@ -205,13 +212,8 @@ export default defineComponent({
           getSelects.value.splice(index, 1)
         }
       }
-    })
-
-    const deleteCars = () => {
       selects.value = null
-      getSelects.value = []
     }
-
 
     return {
       dont,
@@ -231,7 +233,8 @@ export default defineComponent({
       getRunDetail,
       copyAllCars,
       getIndex,
-      turnOffDetail
+      turnOffDetail,
+      listenSelects
 
     }
   }
