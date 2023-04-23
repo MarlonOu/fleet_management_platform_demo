@@ -21,6 +21,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GetVehicleRealtimeDetailInformationController;
 use App\Http\Controllers\AllVehicleInformationController;
 use App\Http\Controllers\GetAttendanceRecordController;
+use App\Http\Controllers\GetAttendanceDetailController;
 use App\Http\Controllers\GetHistoryDataController;
 
 /*
@@ -80,6 +81,7 @@ Route::resource('/getVehicleDetailInformation', GetVehicleRealtimeDetailInformat
 Route::resource('uploadVehicleRealtimeInformation', UploadVehicleRealtimeInformationController::class);
 Route::resource('allVehicleInformation', AllVehicleInformationController::class);
 Route::resource('get-attendance-record', GetAttendanceRecordController::class);
+Route::resource('get-attendance-detail-record', GetAttendanceDetailController::class);
 Route::resource('get-history-data', GetHistoryDataController::class);
 
 

@@ -34,24 +34,18 @@ class GetAttendanceDetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
+        $request = $request->all();
         $user = auth()->user();
         $id = $user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
-        $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where('task_status', '=', '1')->get();
+        $licencePlate = $request['licence_plate'];
+        $vehicleNumber = DB::table($tax_id . '_commercial_vehicle_specification')->where('licence_plate', '=', $licencePlate)->pluck('vehicle_number')[0];
+        $driverName = $request['driver_name'];
+        $driverNumber = DB::table($tax_id . '_driver_information')->where('driver_name', '=', $driverName)->pluck('driver_number')[0];
+        $query = [['vehicle_number', $vehicleNumber], ['driver_number', $driverNumber]];
+        $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where($query)->get();
         $taskInformation = array();
         for ($i=0; $i<sizeof($taskData); $i++){          
-            $driverNumber = $taskData[$i]->driver_number;
-            $driverName = DB::table($tax_id . '_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
-            $vehicleNumber = $taskData[$i]->vehicle_number;
-            $licencePlate = DB::table($tax_id . '_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];
             $time = $taskData[$i]->task_end_time - $taskData[$i]->task_start_time;
             $day = floor($time / (3600 * 24));
             $second = $time % (3600 * 24);
@@ -72,6 +66,14 @@ class GetAttendanceDetailController extends Controller
         }
         
         return response()->json($taskInformation);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
     }
 
     /**

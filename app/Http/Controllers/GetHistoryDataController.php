@@ -42,13 +42,14 @@ class GetHistoryDataController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $vehicle_number)
+    public function show(string $taskNumber)
     {
         $user = auth()->user();
         $id = $user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
-        $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where('vehicle_number', '=', $vehicle_number)->get()[0];
-        $historyData = DB::table($tax_id.'_vehicle_history_'.$vehicle_number)->get();
+        $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where('task_number', '=', $taskNumber)->get()[0];
+        $vehicleNumber = $taskData->vehicle_number;
+        $historyData = DB::table($tax_id.'_vehicle_history_'.$vehicleNumber)->get();
         $co2Emission = $taskData->co2_emission;
         $mileage = round($taskData->task_end_mileage - $taskData->task_start_mileage, 2);
         if ($co2Emission == null){
@@ -66,14 +67,13 @@ class GetHistoryDataController extends Controller
             //CO2 dieselWeight * 3.16 kg/kg fuel = co2 kg
             $co2Emission = round(($dieselWeight * 3.16), 2);
             DB::table($tax_id.'_vehicle_attendance_record')
-                ->where('vehicle_number', $vehicle_number)
+                ->where('vehicle_number', $vehicleNumber)
                 ->update([
                     'co2_emission' => $co2Emission
                     ]);
         }
         $driverNumber = $taskData->driver_number;
         $driverName = DB::table($tax_id . '_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
-        $vehicleNumber = $taskData->vehicle_number;
         $licencePlate = DB::table($tax_id . '_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];     
         $taskStartTime = $taskData->task_start_time;
         $taskEndTime = $taskData->task_end_time;
