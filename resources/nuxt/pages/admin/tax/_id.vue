@@ -198,7 +198,7 @@ export default defineComponent({
             let colors = []
             let point = []
             all.forEach((value) => {
-                if (value > max) {
+                if (value > 20) {
                     colors.push('rgb(75, 192, 192)')
                     point.push(3)
                 } else {
@@ -232,19 +232,21 @@ export default defineComponent({
                     label: '轉速',
                     yAxisID: 'y',
                     data: engine_speed,
-                    circular: true,
-                    fill: false,
+
+                    fill: true,
                     borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 0
                 },
                 {
                     label: '時速',
                     yAxisID: 'y1',
                     data: speed,
-                    circular: true,
-                    fill: false,
+
+                    fill: true,
                     borderColor: 'rgb(155, 92, 122)',
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 0
                 },
             ]
             const mix = {
@@ -257,6 +259,7 @@ export default defineComponent({
         const option = computed(() => {
             const AAA = {
                 responsive: true,
+                maintainAspectRatio: true,
                 interaction: {
                     mode: 'index',
                     intersect: false,
@@ -295,9 +298,10 @@ export default defineComponent({
                     label: '平均油耗',
                     data: engine_speed,
                     circular: true,
-                    fill: false,
+                    fill: true,
                     borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 0
                 }
             ]
             const mix = {
@@ -314,9 +318,10 @@ export default defineComponent({
                     label: '怠速油耗(idle_fuel)',
                     data: engine_speed,
                     circular: true,
-                    fill: false,
+                    fill: true,
                     borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 0
                 }
             ]
             const mix = {
@@ -334,9 +339,10 @@ export default defineComponent({
                     label: '空轉時間(idle_hours)',
                     data: engine_speed,
                     circular: true,
-                    fill: false,
+                    fill: true,
                     borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 0
                 }
             ]
             const mix = {
@@ -354,9 +360,10 @@ export default defineComponent({
                     label: '順時油耗(instant_fuel)',
                     data: engine_speed,
                     circular: true,
-                    fill: false,
+                    fill: true,
                     borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 0
                 }
             ]
             const mix = {
@@ -374,9 +381,10 @@ export default defineComponent({
                     label: '總里程數(odo_mileage)',
                     data: engine_speed,
                     circular: true,
-                    fill: false,
+                    fill: true,
                     borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 0
                 }
             ]
             const mix = {
