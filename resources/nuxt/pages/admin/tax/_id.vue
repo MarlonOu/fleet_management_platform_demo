@@ -159,15 +159,30 @@ export default defineComponent({
         }
         show()
         const rotatingSpeed = computed(() => {
+            const max = modal.value.speedThreshold
+            const all = modal.value.engine_speed
+            let colors = []
+            let point = []
+            all.forEach((value) => {
+                if (value > max) {
+                    colors.push('rgb(75, 192, 192)')
+                    point.push(3)
+                } else {
+                    point.push(0)
+                    colors.push('red')
+                }
+            });
             const data = modal.value.engine_speed
             const time = modal.value.date_time
             const datasets = [{
 
                 label: '轉速',
                 data: data,
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 1
+                fill: true,
+                backgroundColor: colors,
+                tension: 0.1,
+                pointRadius: point
+
             }]
             const engine_speed = {
                 labels: time,
@@ -176,15 +191,30 @@ export default defineComponent({
             return engine_speed
         })
         const speed = computed(() => {
+
+            const max = modal.value.speedThreshold
+            const all = modal.value.speed
+            let colors = []
+            let point = []
+            all.forEach((value) => {
+                if (value > max) {
+                    colors.push('rgb(75, 192, 192)')
+                    point.push(3)
+                } else {
+                    point.push(0)
+                    colors.push('red')
+                }
+            });
+
             const data = modal.value.speed
             const time = modal.value.date_time
             const datasets = [{
-
                 label: '時速',
                 data: data,
-                fill: false,
-                borderColor: 'rgb(155, 92, 122)',
-                tension: 0.1
+                fill: true,
+                backgroundColor: colors,
+                tension: 0.1,
+                pointRadius: point
             }]
             const speed = {
                 labels: time,
@@ -256,12 +286,6 @@ export default defineComponent({
 
 
         const average = computed(() => {
-            const max = 4.096
-            const all = modal.value.average_fuel
-            const color = all.map(x => 'black');
-
-            // change max color
-            color[max] = 'red';
             const engine_speed = modal.value.average_fuel
             const speed = modal.value.speed
             const time = modal.value.date_time
@@ -271,7 +295,7 @@ export default defineComponent({
                     data: engine_speed,
                     circular: true,
                     fill: false,
-                    borderColor: color,
+                    borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1
                 }
             ]
