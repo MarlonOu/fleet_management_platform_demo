@@ -326,9 +326,11 @@ export default defineComponent({
             }
             return mix
         })
-        const type = ref(null)
+        const clear = () => {
+            licence_plate.value = null
+            driver_name.value = null
+        }
         return {
-            type,
             allCarDetailsList,
             getAllCarLocation,
             show,
@@ -343,7 +345,8 @@ export default defineComponent({
             loadingData,
             rotatingSpeed,
             speed,
-            mixSpeed
+            mixSpeed,
+            clear
         }
     }
 })
