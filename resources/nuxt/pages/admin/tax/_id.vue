@@ -198,7 +198,7 @@ export default defineComponent({
             let colors = []
             let point = []
             all.forEach((value) => {
-                if (value > 20) {
+                if (value > max) {
                     colors.push('rgb(75, 192, 192)')
                     point.push(3)
                 } else {
