@@ -50,7 +50,7 @@
                         <th>任務持續時間</th>
                         <th>查看任務資訊</th>
                     </tr>
-                    <tr v-for="allCar in allCarList">
+                    <tr v-for="allCar in allCarDetailsList">
                         <td>
                             {{ allCar.task_number }}
                         </td>
@@ -71,63 +71,130 @@
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal" @click="show()">
-                                Launch demo modal
+                                data-bs-target="#exampleModal" @click="show(allCar.task_number)">
+                                查看
                             </button>
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
-        <div ref="modal" class=" modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
+        <div class=" modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">詳細資料</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <div v-if="loadingData" class="text-center">
+                            <h1>
+                                資料讀取中
+                            </h1>
+
+                        </div>
+                        <div v-else>
+                            <div class="w-75 m-auto">
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <div>
+                                        車隊統編:
+                                    </div>
+                                    <div>
+                                        {{ modal.tax_id }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <div>
+                                        車牌號碼:
+                                    </div>
+                                    <div>
+                                        {{ modal.licence_plate }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <div>
+                                        駕駛人:
+                                    </div>
+                                    <div>
+                                        {{ modal.driver_name }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <div>
+                                        任務啟動時間:
+                                    </div>
+                                    <div>
+                                        {{ modal.task_start_sime }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <div>
+                                        任務結束時間:
+                                    </div>
+                                    <div>
+                                        {{ modal.task_end_time }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <div>
+                                        任務持續時間:
+                                    </div>
+                                    <div>
+                                        {{ modal.time }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <div>
+                                        任務行駛總里程:
+                                    </div>
+                                    <div>
+                                        {{ modal.mileage }}
+                                    </div>
+                                </div>
+                                <div class="mb-2 d-flex justify-content-between">
+                                    <div>
+                                        碳排放:
+                                    </div>
+                                    <div>
+                                        {{ modal.co2_emission }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block mb-2 font-bold"> 時速/轉速 </label>
+                                <client-only>
+                                    <line-chart :data="mixSpeed" />
+                                </client-only>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <client-only>
+                                        <line-chart :data="speed" />
+                                    </client-only>
+                                </div>
+                                <div class="col-sm-6">
+                                    <client-only>
+                                        <line-chart :data="rotatingSpeed" />
+                                    </client-only>
+                                </div>
+                            </div>
+
+                        </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- <line-chart :data="chartData" /> -->
 </template>
   
 <script>
-import { useContext, ref, useRouter, watch, computed } from '@nuxtjs/composition-api'
+import { useContext, ref, useRouter, watch, computed, defineComponent } from '@nuxtjs/composition-api'
 
-export default {
-    data() {
-        return {
-            chartData: {
-                datasets: [{
-                    label: 'My First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                },
+export default defineComponent({
 
-                {
-                    label: 'My First Dataset',
-                    data: [77, 12, 33, 22, 123, 22, 1],
-                    fill: false,
-                    borderColor: 'rgb(75, 192, 122)',
-                    tension: 0.1
-                }
-                ]
-            }
-        };
-    },
     setup() {
         const { $axios } = useContext()
         const router = useRouter()
@@ -141,8 +208,20 @@ export default {
             }
         }
         getAllCarLocation()
-        const show = () => {
-            console.log(123)
+        const loadingData = ref(false)
+        const modal = ref('')
+        const show = (val) => {
+            loadingData.value = true
+            $axios.get(`api/get-history-data/${val}`)
+                .then(({ data }) => {
+                    modal.value = data
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+                .finally(() => {
+                    loadingData.value = false
+                })
         }
         const disabled = computed(() => {
             if (loading.value || !licence_plate.value) {
@@ -182,6 +261,7 @@ export default {
             getAllNameList(val)
         })
         getAllCarList()
+
         const submit = () => {
             const payload = {
                 licence_plate: licence_plate.value,
@@ -194,8 +274,73 @@ export default {
                 .catch((e) => {
                     console.log(e)
                 })
+
         }
+        const rotatingSpeed = computed(() => {
+            const data = modal.value.engine_speed
+            const time = modal.value.date_time
+            const datasets = [{
+
+                label: '轉速',
+                data: data,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 1
+            }]
+            const engine_speed = {
+                labels: time,
+                datasets
+            }
+            return engine_speed
+        })
+        const speed = computed(() => {
+            const data = modal.value.speed
+            const time = modal.value.date_time
+            const datasets = [{
+
+                label: '時速',
+                data: data,
+                fill: true,
+                borderColor: 'rgb(155, 92, 122)',
+                tension: 0.1
+            }]
+            const speed = {
+                labels: time,
+                datasets
+            }
+            return speed
+        })
+        const mixSpeed = computed(() => {
+            const engine_speed = modal.value.engine_speed
+            const speed = modal.value.speed
+            const time = modal.value.date_time
+            const datasets = [
+                {
+                    label: '轉速',
+                    data: engine_speed,
+                    circular: true,
+                    fill: true,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                },
+                {
+                    label: '時速',
+                    data: speed,
+                    circular: true,
+                    fill: true,
+                    borderColor: 'rgb(155, 92, 122)',
+                    tension: 0.1
+                },
+            ]
+            const mix = {
+                labels: time,
+                datasets
+            }
+            return mix
+        })
+        const type = ref(null)
         return {
+            type,
             allCarDetailsList,
             getAllCarLocation,
             show,
@@ -205,10 +350,15 @@ export default {
             allCarNameList,
             loading,
             disabled,
-            submit
+            submit,
+            modal,
+            loadingData,
+            rotatingSpeed,
+            speed,
+            mixSpeed
         }
     }
-}
+})
 </script>
 <style lang="scss">
 .form-select:disabled {
