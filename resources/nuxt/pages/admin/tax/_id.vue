@@ -2,7 +2,7 @@
     <div class="py-5">
         <div class="container">
             <div>
-                <h1>ESG 查詢結果</h1>
+                <h1>SwiSys車隊管理平台 ESG 車輛查詢結果</h1>
                 <div>
                     <div v-if="loadingData" class="text-center">
                         <h5 class="fw-bold mb-5 text-primary">
@@ -87,6 +87,7 @@
                         </div>
                         <hr>
                         <div class="row mb-3">
+                            <label class="block mb-2 font-bold"> Over/Under Threshold 分析 </label>
                             <div class="col-sm-6">
                                 <client-only>
                                     <line-chart :data="speed" />
