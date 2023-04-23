@@ -256,6 +256,12 @@ export default defineComponent({
 
 
         const average = computed(() => {
+            const max = 4.096
+            const all = modal.value.average_fuel
+            const color = all.map(x => 'black');
+
+            // change max color
+            color[max] = 'red';
             const engine_speed = modal.value.average_fuel
             const speed = modal.value.speed
             const time = modal.value.date_time
@@ -265,7 +271,7 @@ export default defineComponent({
                     data: engine_speed,
                     circular: true,
                     fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
+                    borderColor: color,
                     tension: 0.1
                 }
             ]
