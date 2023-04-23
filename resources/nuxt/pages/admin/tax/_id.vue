@@ -2,7 +2,7 @@
     <div class="py-5">
         <div class="container">
             <div>
-                <h1>詳細資料</h1>
+                <h1>ESG 查詢結果</h1>
                 <div>
                     <div v-if="loadingData" class="text-center">
                         <h5 class="fw-bold mb-5 text-primary">
@@ -76,14 +76,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <label class="block mb-2 font-bold"> 時速/轉速 </label>
-                            <client-only>
-                                <line-chart :data="mixSpeed" />
-                            </client-only>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <label class="block mb-2 font-bold"> Correlations分析 </label>
+                                <client-only>
+                                    <line-chart :data="mixSpeed" :options="option" />
+                                </client-only>
+                            </div>
+                            <div class="col-sm-6">
+                                <client-only>
+                                    <line-chart :data="odo_mileage" />
+                                </client-only>
+                            </div>
                         </div>
                         <hr>
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-sm-6">
                                 <client-only>
                                     <line-chart :data="speed" />
@@ -95,10 +102,31 @@
                                 </client-only>
                             </div>
                         </div>
-
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <client-only>
+                                    <line-chart :data="average" />
+                                </client-only>
+                            </div>
+                            <div class="col-sm-6">
+                                <client-only>
+                                    <line-chart :data="idle" />
+                                </client-only>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <client-only>
+                                    <line-chart :data="idle_hours" />
+                                </client-only>
+                            </div>
+                            <div class="col-sm-6">
+                                <client-only>
+                                    <line-chart :data="instant_fuel" />
+                                </client-only>
+                            </div>
+                        </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -170,6 +198,7 @@ export default defineComponent({
             const datasets = [
                 {
                     label: '轉速',
+                    yAxisID: 'y',
                     data: engine_speed,
                     circular: true,
                     fill: false,
@@ -178,6 +207,7 @@ export default defineComponent({
                 },
                 {
                     label: '時速',
+                    yAxisID: 'y1',
                     data: speed,
                     circular: true,
                     fill: false,
@@ -191,12 +221,151 @@ export default defineComponent({
             }
             return mix
         })
+
+        const option = computed(() => {
+            const AAA = {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Chart.js Line Chart - Multi Axis'
+                    }
+                },
+
+                scales: {
+                    yAxes: [{
+                        id: 'y',
+                        type: 'linear',
+                        position: 'left',
+                    }, {
+                        id: 'y1',
+                        type: 'linear',
+                        position: 'right',
+                    }]
+                }
+
+            }
+            return AAA
+        })
+
+
+        const average = computed(() => {
+            const engine_speed = modal.value.average_fuel
+            const speed = modal.value.speed
+            const time = modal.value.date_time
+            const datasets = [
+                {
+                    label: '平均油耗',
+                    data: engine_speed,
+                    circular: true,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }
+            ]
+            const mix = {
+                labels: time,
+                datasets
+            }
+            return mix
+        })
+        const idle = computed(() => {
+            const engine_speed = modal.value.idle_fuel
+            const time = modal.value.date_time
+            const datasets = [
+                {
+                    label: '怠速油耗(idle_fuel)',
+                    data: engine_speed,
+                    circular: true,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }
+            ]
+            const mix = {
+                labels: time,
+                datasets
+            }
+            return mix
+        })
+        const idle_hours = computed(() => {
+            const engine_speed = modal.value.idle_hours
+            const speed = modal.value.speed
+            const time = modal.value.date_time
+            const datasets = [
+                {
+                    label: '空轉時間(idle_hours)',
+                    data: engine_speed,
+                    circular: true,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }
+            ]
+            const mix = {
+                labels: time,
+                datasets
+            }
+            return mix
+        })
+        const instant_fuel = computed(() => {
+            const engine_speed = modal.value.instant_fuel
+            const speed = modal.value.speed
+            const time = modal.value.date_time
+            const datasets = [
+                {
+                    label: '順時油耗(instant_fuel)',
+                    data: engine_speed,
+                    circular: true,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }
+            ]
+            const mix = {
+                labels: time,
+                datasets
+            }
+            return mix
+        })
+        const odo_mileage = computed(() => {
+            const engine_speed = modal.value.odo_mileage
+            const speed = modal.value.speed
+            const time = modal.value.date_time
+            const datasets = [
+                {
+                    label: '總里程數(odo_mileage)',
+                    data: engine_speed,
+                    circular: true,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }
+            ]
+            const mix = {
+                labels: time,
+                datasets
+            }
+            return mix
+        })
+
         return {
             modal,
             loadingData,
             rotatingSpeed,
             speed,
-            mixSpeed
+            mixSpeed,
+            average,
+            idle,
+            idle_hours,
+            instant_fuel,
+            odo_mileage,
+            option
         }
     }
 })
