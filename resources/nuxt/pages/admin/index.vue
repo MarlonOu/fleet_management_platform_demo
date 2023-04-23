@@ -7,16 +7,36 @@
                         車輛選擇:
                     </div>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control">
+                        <select v-model="licence_plate" class="form-select">
+                            <option :value="null" disabled>請選擇</option>
+                            <option v-for="car in allCarList" :value="car">
+                                {{ car }}
+                            </option>
+                        </select>
                     </div>
                 </div>
-                <div class="row w-100 align-items-center">
+                <div class="row w-100 align-items-center mb-5">
                     <div class="col-sm-2">
-                        車輛選擇:
+                        車輛駕駛人選擇:
                     </div>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control">
+                        <select v-model="driver_name" class="form-select" :disabled="disabled">
+                            <option :value="null" disabled>請選擇</option>
+                            <option v-for="name in allCarNameList" :value="name">
+                                {{ name }}
+                            </option>
+                        </select>
                     </div>
+                </div>
+                <div class="row align-items-center ">
+                    <div class="col-sm-5">
+                        <button @click="submit()" class="w-100 btn btn-primary">送出</button>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-5">
+                        <button @click="clear()" class="w-100 btn btn-danger">移除</button>
+                    </div>
+
                 </div>
             </div>
             <div class="w-75 m-auto p-5 bg-warning">
@@ -83,7 +103,7 @@
 </template>
   
 <script>
-import { useContext, ref, useRouter, onMounted } from '@nuxtjs/composition-api'
+import { useContext, ref, useRouter, watch, computed } from '@nuxtjs/composition-api'
 
 export default {
     data() {
@@ -111,14 +131,31 @@ export default {
     setup() {
         const { $axios } = useContext()
         const router = useRouter()
-        const allCarList = ref([])
+        const allCarDetailsList = ref([])
+        const loading = ref(false)
         const getAllCarLocation = () => {
             if (process.client) {
                 if (!localStorage.getItem('auth') || !localStorage.getItem('user')) {
                     router.push('/login')
                 }
             }
-
+        }
+        getAllCarLocation()
+        const show = () => {
+            console.log(123)
+        }
+        const disabled = computed(() => {
+            if (loading.value || !licence_plate.value) {
+                return true
+            } else {
+                return false
+            }
+        })
+        const licence_plate = ref(null)
+        const driver_name = ref(null)
+        const allCarList = ref([])
+        const allCarNameList = ref([])
+        const getAllCarList = () => {
             $axios.get('api/get-attendance-record')
                 .then(({ data }) => {
                     allCarList.value = data
@@ -127,16 +164,54 @@ export default {
                     console.log(e)
                 })
         }
-        getAllCarLocation()
-        const show = () => {
-            console.log(123)
+        const getAllNameList = (val) => {
+            loading.value = true
+            driver_name.value = null
+            $axios.get(`api/get-attendance-record/${val}`)
+                .then(({ data }) => {
+                    allCarNameList.value = data
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+                .finally(() => {
+                    loading.value = false
+                })
         }
-
+        watch(licence_plate, (val) => {
+            getAllNameList(val)
+        })
+        getAllCarList()
+        const submit = () => {
+            const payload = {
+                licence_plate: licence_plate.value,
+                driver_name: driver_name.value
+            }
+            $axios.post('api/get-attendance-detail-record', payload)
+                .then(({ data }) => {
+                    allCarDetailsList.value = data
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+        }
         return {
-            allCarList,
+            allCarDetailsList,
             getAllCarLocation,
-            show
+            show,
+            licence_plate,
+            allCarList,
+            driver_name,
+            allCarNameList,
+            loading,
+            disabled,
+            submit
         }
     }
 }
 </script>
+<style lang="scss">
+.form-select:disabled {
+    background-color: dimgrey !important;
+}
+</style>
