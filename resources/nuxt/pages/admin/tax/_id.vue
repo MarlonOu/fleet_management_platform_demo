@@ -83,11 +83,7 @@
                                     <line-chart :data="mixSpeed" :options="option" />
                                 </client-only>
                             </div>
-                            <div class="col-sm-6">
-                                <client-only>
-                                    <line-chart :data="odo_mileage" />
-                                </client-only>
-                            </div>
+
                         </div>
                         <hr>
                         <div class="row mb-3">
@@ -125,6 +121,11 @@
                                     <line-chart :data="instant_fuel" />
                                 </client-only>
                             </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <client-only>
+                                <line-chart :data="odo_mileage" />
+                            </client-only>
                         </div>
                     </div>
                 </div>
