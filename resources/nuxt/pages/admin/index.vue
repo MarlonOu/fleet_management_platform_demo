@@ -70,16 +70,14 @@
                             {{ allCar.time }}
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal" @click="show(allCar.task_number)">
-                                查看
-                            </button>
+                            <NuxtLink :to="'admin/tax/' + allCar.task_number" target="_blank" class="btn btn-danger">查看
+                            </NuxtLink>
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
-        <div class=" modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- <div class=" modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -186,7 +184,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
   
@@ -211,17 +209,7 @@ export default defineComponent({
         const loadingData = ref(false)
         const modal = ref('')
         const show = (val) => {
-            loadingData.value = true
-            $axios.get(`api/get-history-data/${val}`)
-                .then(({ data }) => {
-                    modal.value = data
-                })
-                .catch((e) => {
-                    console.log(e)
-                })
-                .finally(() => {
-                    loadingData.value = false
-                })
+            router.push(`admin/tax/${val}`)
         }
         const disabled = computed(() => {
             if (loading.value || !licence_plate.value) {
