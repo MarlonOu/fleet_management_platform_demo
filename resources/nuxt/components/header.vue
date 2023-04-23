@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-sm bg-dark ">
+        <nav class="navbar navbar-expand-sm bg-dark" v-if="!route.params.id">
             <ul class="navbar-nav w-100 justify-content-between">
                 <li class="nav-item nav-link" v-if="route.path === '/'">
                     SwiSys車隊管理平台
