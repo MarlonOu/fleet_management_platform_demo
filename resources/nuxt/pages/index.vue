@@ -165,7 +165,7 @@ export default defineComponent({
         if (!loading.value) {
           getNowAllCarLocation()
         }
-      }, "1000");
+      }, "3000");
     }
     const getRunCar = computed(() => {
       const all = copyAllCars.value
