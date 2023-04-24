@@ -65,8 +65,8 @@ class Post extends Controller
         ->where('vehicle_number', $vehicle_number)
         ->update([
             'altitude' => $carRealtimeData['altitude'],
-            'lat' => $carRealtimeData['latitude'],
-            'lng' => $carRealtimeData['longitude'],
+            'latitude' => $carRealtimeData['latitude'],
+            'longitude' => $carRealtimeData['longitude'],
             'date_time' => $carRealtimeData['date_time'],
             'speed' => $carRealtimeData['speed'],
             'engine_speed' => $carRealtimeData['engine_speed'],

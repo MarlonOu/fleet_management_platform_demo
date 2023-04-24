@@ -123,6 +123,7 @@ export default defineComponent({
       $axios.get('api/allVehicleInformation')
         .then(({ data }) => {
           allCarList.value = data
+          console.log(allCarList)
           nextTick(() => {
             getAll()
           })
@@ -134,6 +135,7 @@ export default defineComponent({
     getAllCarLocation()
     const getNowAllCarLocation = () => {
       loading.value = true
+      console.log(allCarList)
       $axios.get('api/allVehicleInformation')
         .then(({ data }) => {
           allCarList.value = data
@@ -163,7 +165,7 @@ export default defineComponent({
         if (!loading.value) {
           getNowAllCarLocation()
         }
-      }, "3000");
+      }, "1000");
     }
     const getRunCar = computed(() => {
       const all = copyAllCars.value
