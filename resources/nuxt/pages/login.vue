@@ -22,6 +22,7 @@ export default defineComponent({
         const { $axios } = useContext()
         const email = ref('aaa@gmail.com')
         const password = ref('aaaaaa')
+      const api_token = ref('1')
         const router = useRouter()
         const login = () => {
             const payload = {
@@ -32,12 +33,17 @@ export default defineComponent({
                 .then(({ data }) => {
                     localStorage.setItem('auth', data.original.access_token)
                     localStorage.setItem('user', data.original.user.name)
+                  localStorage.setItem('type', data.original.user.api_token)
                 })
                 .catch((e) => {
                     console.log(e)
                 })
-                .finally(() => {
-                    router.push('/')
+              .finally(() => {
+                if (localStorage.getItem('type') === "1") {
+                  router.push('/index2')
+                } else {
+                  router.push('/')
+                }
                 })
         }
 
