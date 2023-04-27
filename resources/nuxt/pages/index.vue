@@ -55,7 +55,6 @@
               <td>
                 {{ carList.date_time }}
               </td>
-
             </tr>
           </table>
         </div>

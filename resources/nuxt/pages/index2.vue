@@ -36,7 +36,9 @@
             </tr>
             <tr v-if="getRunCarsDetails.length > 0" v-for="(carList, index) in getRunCarsDetails">
               <td>
-                <button class="btn btn-primary" @click="turnDetail(index)">查看</button>
+                <button class="btn btn-primary" @click="turnDetail(index)">
+                  <img src="https://www.lizze.com.br/teste/img/car/w1185/camaro.jpg" width="80" alt="图片">
+                </button>
               </td>
               <td>
                 {{ carList.driver_name }}
@@ -105,11 +107,11 @@
 </template>
 
 <script>
-import { computed, defineComponent, useContext, ref, useRouter, nextTick, watch } from '@nuxtjs/composition-api'
+import {computed, defineComponent, useContext, ref, useRouter, nextTick, watch} from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
-    const { $swal, $axios } = useContext()
+    const {$swal, $axios} = useContext()
     const router = useRouter()
     const allCarList = ref([])
     const allCarLocation = ref(null)
@@ -122,7 +124,7 @@ export default defineComponent({
       }
 
       $axios.get('api/allVehicleInformation')
-        .then(({ data }) => {
+        .then(({data}) => {
           allCarList.value = data
           console.log(allCarList)
           nextTick(() => {
@@ -138,7 +140,7 @@ export default defineComponent({
       loading.value = true
       console.log(allCarList)
       $axios.get('api/allVehicleInformation')
-        .then(({ data }) => {
+        .then(({data}) => {
           allCarList.value = data
         })
         .catch((e) => {
