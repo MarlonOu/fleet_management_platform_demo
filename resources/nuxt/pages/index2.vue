@@ -31,6 +31,7 @@
               <th>車輛品牌</th>
               <th>車輛型式</th>
               <th>時速</th>
+              <th>轉速</th>
               <th>行駛里程數</th>
               <th>時間</th>
             </tr>
@@ -54,6 +55,9 @@
               </td>
               <td>
                 {{ carList.speed }}
+              </td>
+              <td>
+                {{ carList.engine_speed }}
               </td>
               <td>
                 {{ carList.odo_mileage }}

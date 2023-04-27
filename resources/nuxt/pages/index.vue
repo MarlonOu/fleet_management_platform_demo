@@ -30,6 +30,7 @@
               <th>車號</th>
               <th>排放標準</th>
               <th>時速</th>
+              <th>轉速</th>
               <th>行駛里程數</th>
               <th>時間</th>
             </tr>
@@ -48,6 +49,9 @@
               </td>
               <td>
                 {{ carList.speed }}
+              </td>
+              <td>
+                {{ carList.engine_speed }}
               </td>
               <td>
                 {{ carList.odo_mileage }}
