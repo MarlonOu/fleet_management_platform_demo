@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicle_history_obdii_998763946', function (Blueprint $table) {
+        Schema::create('obdii_vehicle_history_029485294', function (Blueprint $table) {
             $table->id();
             $table->integer('task_number');
             $table->char('date_time', 50);
@@ -36,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicle_history_obdii_998763946');
+        Schema::dropIfExists('obdii_vehicle_history_029485294');
     }
 };

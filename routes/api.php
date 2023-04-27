@@ -41,31 +41,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::resource('photos', Post::class);
-Route::resource('make:model Roleest', TestApi::class);
-Route::get('/welcome', function(){
-    return  Vehicle_realtime_information_123::all();
-   // $real_time = DB::table('j1939_vehicle_realtime_data')->get()->toJson();
-   // echo $real_time;
-});
-
-
-Route::middleware('auth:api')->group(function () {
-    Route::get('/user', function(Request $request) {
-        return $request->user();
-    });
-});
-
-Route::get('/getVehicleRealtimeStatus', function(){
-    return  Vehicle_realtime_information_123::all();
-});
-
-Route::get('/getVehicleRealtimeInformation', function(){
-    return  Vehicle_realtime_information_123::all();
-});
-
-Route::get('/getCommercialVehicleSpecification', function(){
-    return  Commercial_vehicle_specification_123::all();
-});
 
 Route::resource('/getDiverInformation', Diver_information_123_Controller::class);
 
@@ -83,8 +58,14 @@ Route::resource('allVehicleInformation', AllVehicleInformationController::class)
 Route::resource('get-attendance-record', GetAttendanceRecordController::class);
 Route::resource('get-attendance-detail-record', GetAttendanceDetailController::class);
 Route::resource('get-history-data', GetHistoryDataController::class);
+//以下小客車相關api--------------------------------------------------------------------------------------------
+//
 
 
+
+
+
+//以下登入相關api--------------------------------------------------------------------------------------------
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
