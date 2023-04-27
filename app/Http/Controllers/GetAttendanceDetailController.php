@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class GetAttendanceDetailController extends Controller
-{    
+{
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
@@ -45,7 +45,7 @@ class GetAttendanceDetailController extends Controller
         $query = [['vehicle_number', $vehicleNumber], ['driver_number', $driverNumber]];
         $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where($query)->get();
         $taskInformation = array();
-        for ($i=0; $i<sizeof($taskData); $i++){          
+        for ($i=0; $i<sizeof($taskData); $i++){
             $time = $taskData[$i]->task_end_time - $taskData[$i]->task_start_time;
             $day = floor($time / (3600 * 24));
             $second = $time % (3600 * 24);
@@ -64,7 +64,7 @@ class GetAttendanceDetailController extends Controller
                 'time'=> $time,
             ));
         }
-        
+
         return response()->json($taskInformation);
     }
 

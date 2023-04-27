@@ -236,7 +236,6 @@ export default defineComponent({
       getIndex,
       turnOffDetail,
       listenSelects
-
     }
   }
 

@@ -20,18 +20,47 @@ class GetAttendanceRecordController extends Controller
 
     public function index()
     {
+
         $user = auth()->user();
-        $id = $user['id'];
-        $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
-        $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where('task_status', '=', '1')->pluck('vehicle_number');
-        $taskData = array_unique(json_decode($taskData));
-        $licencePlateList = array();
-        for ($i=0; $i<sizeof($taskData); $i++){          
-            $vehicleNumber = $taskData[$i];
-            $licencePlate = DB::table($tax_id . '_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];
-            array_push($licencePlateList, $licencePlate);
-        }        
-        return response()->json($licencePlateList);
+        $vehicle_type = $user['vehicle_type'];
+
+        function truck()
+        {
+            $user = auth()->user();
+            $id = $user['id'];
+            $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
+            $taskData = DB::table($tax_id . '_vehicle_attendance_record')->where('task_status', '=', '1')->pluck('vehicle_number');
+            $taskData = array_unique(json_decode($taskData));
+            $licencePlateList = array();
+            for ($i = 0; $i < sizeof($taskData); $i++) {
+                $vehicleNumber = $taskData[$i];
+                $licencePlate = DB::table($tax_id . '_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];
+                array_push($licencePlateList, $licencePlate);
+            }
+            return response()->json($licencePlateList);
+        }
+
+        function vehicle()
+        {
+            $user = auth()->user();
+            $id = $user['id'];
+            $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
+            $taskData = DB::table($tax_id . '_obdii_vehicle_attendance_record')->where('task_status', '=', '1')->pluck('vehicle_number');
+            $taskData = array_unique(json_decode($taskData));
+            $licencePlateList = array();
+            for ($i = 0; $i < sizeof($taskData); $i++) {
+                $vehicleNumber = $taskData[$i];
+                $licencePlate = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];
+                array_push($licencePlateList, $licencePlate);
+            }
+            return response()->json($licencePlateList);
+        }
+
+        if ($vehicle_type == '1') {
+            return vehicle();
+        } else {
+            return truck();
+        }
     }
 
     /**
@@ -56,19 +85,50 @@ class GetAttendanceRecordController extends Controller
     public function show(string $licencePlate)
     {
         $user = auth()->user();
-        $id = $user['id'];
-        $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
-        $vehicleNumber = DB::table($tax_id . '_commercial_vehicle_specification')->where('licence_plate', '=', $licencePlate)->pluck('vehicle_number')[0];
-        $taskData = DB::table($tax_id.'_vehicle_attendance_record')->where('vehicle_number', '=', $vehicleNumber)->pluck('driver_number');
-        $taskData = array_unique(json_decode($taskData));
-        $driverNameList = array();
-        for ($i=0; $i<sizeof($taskData); $i++){          
-            $driverNumber = $taskData[$i];
-            $driverName = DB::table($tax_id . '_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
-            array_push($driverNameList, $driverName);
-        }  
-        
-        return response()->json($driverNameList);
+        $vehicle_type = $user['vehicle_type'];
+        function truck($licencePlate)
+        {
+            $user = auth()->user();
+            $id = $user['id'];
+            $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
+            $vehicleNumber = DB::table($tax_id . '_commercial_vehicle_specification')->where('licence_plate', '=', $licencePlate)->pluck('vehicle_number')[0];
+            $taskData = DB::table($tax_id . '_vehicle_attendance_record')->where('vehicle_number', '=', $vehicleNumber)->pluck('driver_number');
+            $taskData = array_unique(json_decode($taskData));
+            $driverNameList = array();
+            for ($i = 0; $i < sizeof($taskData); $i++) {
+                $driverNumber = $taskData[$i];
+                $driverName = DB::table($tax_id . '_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
+                array_push($driverNameList, $driverName);
+            }
+
+            return response()->json($driverNameList);
+        }
+
+
+        function vehicle($licencePlate)
+        {
+            $user = auth()->user();
+            $id = $user['id'];
+            $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
+            $vehicleNumber = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('licence_plate', '=', $licencePlate)->pluck('vehicle_number')[0];
+            $taskData = DB::table($tax_id . '_obdii_vehicle_attendance_record')->where('vehicle_number', '=', $vehicleNumber)->pluck('driver_number');
+            $taskData = array_unique(json_decode($taskData));
+            $driverNameList = array();
+            for ($i = 0; $i < sizeof($taskData); $i++) {
+                $driverNumber = $taskData[$i];
+                $driverName = DB::table($tax_id . '_obdii_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
+                array_push($driverNameList, $driverName);
+            }
+
+            return response()->json($driverNameList);
+        }
+
+        if ($vehicle_type == '1') {
+            return vehicle($licencePlate);
+        } else {
+            return truck($licencePlate);
+        }
+
     }
 
     /**

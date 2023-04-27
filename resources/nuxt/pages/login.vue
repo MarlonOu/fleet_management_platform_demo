@@ -54,7 +54,6 @@ export default defineComponent({
       login
     }
   }
-
 })
 </script>
 
