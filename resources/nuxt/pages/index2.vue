@@ -28,10 +28,10 @@
               <th>查看</th>
               <th>駕駛人姓名</th>
               <th>車號</th>
-              <th>排放標準</th>
+              <th>車輛品牌</th>
+              <th>車輛型式</th>
               <th>時速</th>
               <th>行駛里程數</th>
-              <th>時間</th>
               <th>時間</th>
             </tr>
             <tr v-if="getRunCarsDetails.length > 0" v-for="(carList, index) in getRunCarsDetails">
@@ -47,7 +47,10 @@
                 {{ carList.licence_plate }}
               </td>
               <td>
-                {{ carList.emission_standards }}
+                {{ carList.vehicle_brand }}
+              </td>
+              <td>
+                {{ carList.vehicle_model }}
               </td>
               <td>
                 {{ carList.speed }}
@@ -95,7 +98,7 @@
             <b>{{ getRunCarsDetails[getIndex].odo_mileage }}</b>
           </div>
           <div class="col-sm-6" style="height: 50px">
-            排放標準
+            瞬時油耗
             <br>
             <b>{{ getRunCarsDetails[getIndex].emission_standards }}</b>
           </div>

@@ -64,7 +64,6 @@ class GetAttendanceDetailController extends Controller
                 'time'=> $time,
             ));
         }
-
         return response()->json($taskInformation);
     }
 
