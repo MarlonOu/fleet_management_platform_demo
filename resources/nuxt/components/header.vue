@@ -13,11 +13,11 @@
                         {{ user }}您好
                     </li>
                     <li class="nav-item mx-2 nav-link">
-                        <NuxtLink v-if="route.path === '/' " to="/admin">ESG管理系統</NuxtLink>
+                        <NuxtLink v-if="route.path === '/'" to="/admin">ESG管理系統</NuxtLink>
                         <NuxtLink v-else to="/">SwiSys車隊管理平台</NuxtLink>
                     </li>
                     <li class="nav-item nav-link">
-                        <NuxtLink to="/login">登出</NuxtLink>
+                        <NuxtLink to="/login" @click="logout()">登出</NuxtLink>
                     </li>
                 </div>
 
@@ -26,7 +26,7 @@
     </div>
 </template>
 <script>
-import { useRoute, defineComponent, ref } from '@nuxtjs/composition-api'
+import { useRoute, defineComponent, ref, nextTick } from '@nuxtjs/composition-api'
 
 export default defineComponent({
     setup() {
@@ -37,10 +37,18 @@ export default defineComponent({
                 user.value = localStorage.getItem('user')
             }
         }
+        const logout = () => {
+            localStorage.removeItem('user');
+            localStorage.removeItem('auth');
+            nextTick(() => {
+                router.push('/login')
+            })
+        }
         setUser()
         return {
             route,
-            user
+            user,
+            logout
 
         }
     }
