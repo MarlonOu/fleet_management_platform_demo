@@ -41,46 +41,15 @@ export default defineComponent({
                 })
         }
 
-        export default defineComponent({
-            layout: 'login',
-            setup() {
-                const { $axios } = useContext()
-                const email = ref('aaa@gmail.com')
-                const password = ref('aaaaaa')
-                const vehicle_type = ref('1')
-                const router = useRouter()
-                const login = () => {
-                    const payload = {
-                        email: email.value,
-                        password: password.value
-                    }
-                    $axios.post('api/auth/login', payload)
-                        .then(({ data }) => {
-                            localStorage.setItem('auth', data.original.access_token)
-                            localStorage.setItem('user', data.original.user.name)
-                            localStorage.setItem('type', data.original.user.vehicle_type)
-                        })
-                        .catch((e) => {
-                            console.log(e)
-                        })
-                        .finally(() => {
-                            if (localStorage.getItem('type') === "1") {
-                                router.push('/index2')
-                            } else {
-                                router.push('/')
-                            }
-                        })
-                }
+        return {
+            email,
+            password,
+            login
+        }
+    }
 
-                return {
-                    email,
-                    password,
-                    login
-                }
-            }
-        })
+})
 </script>
-
 <style>
 .bg {
     display: flex;
