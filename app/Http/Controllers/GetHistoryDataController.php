@@ -44,6 +44,8 @@ class GetHistoryDataController extends Controller
      */
     public function show(string $taskNumber)
     {
+
+
         $user = auth()->user();
         $id = $user['id'];
         $tax_id = DB::table('users')->where('id', '=', $id)->pluck('tax_id')[0];
@@ -56,7 +58,7 @@ class GetHistoryDataController extends Controller
             $instantFuelSum = 0;
             for ($i=0; $i<sizeof($historyData); $i++)
                 $instantFuelSum += $historyData[$i]->instant_fuel;
-            //平均油耗 instantFuelAverage km/L 
+            //平均油耗 instantFuelAverage km/L
             $instantFuelAverage = $instantFuelSum / sizeof($historyData);
             //Mileage during driving (最後一筆ODO - 第一筆ODO)   mileage km
             $mileage = $historyData[sizeof($historyData)-1]->odo_mileage - $historyData[0]->odo_mileage;
@@ -74,7 +76,7 @@ class GetHistoryDataController extends Controller
         }
         $driverNumber = $taskData->driver_number;
         $driverName = DB::table($tax_id . '_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
-        $licencePlate = DB::table($tax_id . '_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];     
+        $licencePlate = DB::table($tax_id . '_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];
         $taskStartTime = $taskData->task_start_time;
         $taskEndTime = $taskData->task_end_time;
         $time = $taskEndTime - $taskStartTime;
@@ -128,7 +130,7 @@ class GetHistoryDataController extends Controller
             'idle_fuel'=> $idleFuelList,
         );
 
-        
+
         return response()->json($esgData);
     }
 

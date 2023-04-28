@@ -6,7 +6,7 @@
           <Map :setLocation="allCarList"></Map>
         </div>
 
-        <div class="bg-success" style="height:50vh; overflow-y:scroll">
+        <div class="bg-success" style="height:50vh">
           <div class="row py-3">
             <div class="col-3">
               <select class="form-select" v-model="selects" @change="listenSelects">
@@ -23,7 +23,7 @@
               <label class="btn btn-danger" @click="deleteCars()">清除</label>
             </div>
           </div>
-          <table v-if="type" style="width: 100%" class="text-white text-center">
+          <table style="width: 100%" class="text-white text-center">
             <tr>
               <th>查看</th>
               <th>駕駛人姓名</th>
@@ -38,7 +38,7 @@
             <tr v-if="getRunCarsDetails.length > 0" v-for="(carList, index) in getRunCarsDetails">
               <td>
                 <button class="btn btn-primary" @click="turnDetail(index)">
-                  <img :src="`/${carList.vehicle_brand}/${carList.vehicle_model}.png`" width="50" alt="图片">
+                  <img src="https://www.lizze.com.br/teste/img/car/w1185/camaro.jpg" width="80" alt="图片">
                 </button>
               </td>
               <td>
@@ -66,44 +66,6 @@
                 {{ carList.date_time }}
               </td>
 
-            </tr>
-          </table>
-          <table v-else style="width: 100%" class="text-white text-center">
-            <tr>
-              <th>查看</th>
-              <th>駕駛人姓名</th>
-              <th>車號</th>
-              <th>排放標準</th>
-              <th>時速</th>
-              <th>轉速</th>
-              <th>行駛里程數</th>
-              <th>時間</th>
-            </tr>
-            <tr v-if="getRunCarsDetails.length > 0" v-for="(carList, index) in getRunCarsDetails">
-              <td>
-                <button class="btn btn-primary" @click="turnDetail(index)">查看</button>
-              </td>
-              <td>
-                {{ carList.driver_name }}
-              </td>
-              <td>
-                {{ carList.licence_plate }}
-              </td>
-              <td>
-                {{ carList.emission_standards }}
-              </td>
-              <td>
-                {{ carList.speed }}
-              </td>
-              <td>
-                {{ carList.engine_speed }}
-              </td>
-              <td>
-                {{ carList.odo_mileage }}
-              </td>
-              <td>
-                {{ carList.date_time }}
-              </td>
             </tr>
           </table>
         </div>
@@ -140,31 +102,24 @@
             <b>{{ getRunCarsDetails[getIndex].odo_mileage }}</b>
           </div>
           <div class="col-sm-6" style="height: 50px">
-            排放標準
+            瞬時油耗
             <br>
             <b>{{ getRunCarsDetails[getIndex].emission_standards }}</b>
           </div>
         </div>
-        <img v-if="type"
-          :src="`/${getRunCarsDetails[getIndex].vehicle_brand}/${getRunCarsDetails[getIndex].vehicle_model}.png`"
-          width="100%" alt="图片">
 
-        現在時間:{{ time | moment('YYYY-MM-DD HH:mm') }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, defineComponent, useContext, ref, useRouter, nextTick, watch } from '@nuxtjs/composition-api'
-import moment from 'moment'
+import {computed, defineComponent, useContext, ref, useRouter, nextTick, watch} from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
-    const { $swal, $axios } = useContext()
+    const {$swal, $axios} = useContext()
     const router = useRouter()
-    const type = ref(null)
-    const time = ref(new Date().getTime())
     const allCarList = ref([])
     const allCarLocation = ref(null)
     const loading = ref(false)
@@ -173,13 +128,10 @@ export default defineComponent({
         if (!localStorage.getItem('auth') || !localStorage.getItem('user')) {
           router.push('/login')
         }
-        if (localStorage.getItem('vehicle_type')) {
-          type.value = localStorage.getItem('vehicle_type')
-        }
       }
 
       $axios.get('api/allVehicleInformation')
-        .then(({ data }) => {
+        .then(({data}) => {
           allCarList.value = data
           console.log(allCarList)
           nextTick(() => {
@@ -195,7 +147,7 @@ export default defineComponent({
       loading.value = true
       console.log(allCarList)
       $axios.get('api/allVehicleInformation')
-        .then(({ data }) => {
+        .then(({data}) => {
           allCarList.value = data
         })
         .catch((e) => {
@@ -294,9 +246,8 @@ export default defineComponent({
       copyAllCars,
       getIndex,
       turnOffDetail,
-      listenSelects,
-      type,
-      time
+      listenSelects
+
     }
   }
 

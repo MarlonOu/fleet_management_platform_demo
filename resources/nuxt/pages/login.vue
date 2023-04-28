@@ -15,13 +15,14 @@
     </div>
 </template>
 <script>
-import { defineComponent, useContext, ref, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useContext, ref, useRouter, nextTick } from '@nuxtjs/composition-api'
 export default defineComponent({
     layout: 'login',
     setup() {
         const { $axios } = useContext()
         const email = ref('aaa@gmail.com')
         const password = ref('aaaaaa')
+
         const router = useRouter()
         const login = () => {
             const payload = {
@@ -32,22 +33,22 @@ export default defineComponent({
                 .then(({ data }) => {
                     localStorage.setItem('auth', data.original.access_token)
                     localStorage.setItem('user', data.original.user.name)
+                    localStorage.setItem('vehicle_type', data.original.user.vehicle_type)
+                    nextTick(() => {
+                        router.push({ path: '/', refresh: true })
+                    })
                 })
                 .catch((e) => {
                     console.log(e)
                 })
-                .finally(() => {
-                    router.push('/')
-                })
-        }
 
+        }
         return {
             email,
             password,
             login
         }
     }
-
 })
 </script>
 <style>
