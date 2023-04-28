@@ -22,6 +22,7 @@ export default defineComponent({
         const { $axios } = useContext()
         const email = ref('aaa@gmail.com')
         const password = ref('aaaaaa')
+
         const router = useRouter()
         const login = () => {
             const payload = {
@@ -32,6 +33,7 @@ export default defineComponent({
                 .then(({ data }) => {
                     localStorage.setItem('auth', data.original.access_token)
                     localStorage.setItem('user', data.original.user.name)
+                    localStorage.setItem('vehicle_type', data.original.user.vehicle_type)
                     nextTick(() => {
                         router.push({ path: '/', refresh: true })
                     })
@@ -39,15 +41,14 @@ export default defineComponent({
                 .catch((e) => {
                     console.log(e)
                 })
-        }
 
+        }
         return {
             email,
             password,
             login
         }
     }
-
 })
 </script>
 <style>

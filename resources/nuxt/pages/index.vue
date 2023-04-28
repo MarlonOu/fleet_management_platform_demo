@@ -23,7 +23,52 @@
               <label class="btn btn-danger" @click="deleteCars()">清除</label>
             </div>
           </div>
-          <table style="width: 100%" class="text-white text-center">
+          <table v-if="type" style="width: 100%" class="text-white text-center">
+            <tr>
+              <th>查看</th>
+              <th>駕駛人姓名</th>
+              <th>車號</th>
+              <th>車輛品牌</th>
+              <th>車輛型式</th>
+              <th>時速</th>
+              <th>轉速</th>
+              <th>行駛里程數</th>
+              <th>時間</th>
+            </tr>
+            <tr v-if="getRunCarsDetails.length > 0" v-for="(carList, index) in getRunCarsDetails">
+              <td>
+                <button class="btn btn-primary" @click="turnDetail(index)">
+                  <img :src="`/${carList.vehicle_brand}/${carList.vehicle_model}.png`" width="50" alt="图片">
+                </button>
+              </td>
+              <td>
+                {{ carList.driver_name }}
+              </td>
+              <td>
+                {{ carList.licence_plate }}
+              </td>
+              <td>
+                {{ carList.vehicle_brand }}
+              </td>
+              <td>
+                {{ carList.vehicle_model }}
+              </td>
+              <td>
+                {{ carList.speed }}
+              </td>
+              <td>
+                {{ carList.engine_speed }}
+              </td>
+              <td>
+                {{ carList.odo_mileage }}
+              </td>
+              <td>
+                {{ carList.date_time }}
+              </td>
+
+            </tr>
+          </table>
+          <table v-else style="width: 100%" class="text-white text-center">
             <tr>
               <th>查看</th>
               <th>駕駛人姓名</th>
@@ -100,7 +145,11 @@
             <b>{{ getRunCarsDetails[getIndex].emission_standards }}</b>
           </div>
         </div>
+        <img v-if="type"
+          :src="`/${getRunCarsDetails[getIndex].vehicle_brand}/${getRunCarsDetails[getIndex].vehicle_model}.png`"
+          width="100%" alt="图片">
 
+        現在時間:{{ time | moment('YYYY-MM-DD HH:mm') }}
       </div>
     </div>
   </div>
@@ -108,11 +157,14 @@
 
 <script>
 import { computed, defineComponent, useContext, ref, useRouter, nextTick, watch } from '@nuxtjs/composition-api'
+import moment from 'moment'
 
 export default defineComponent({
   setup() {
     const { $swal, $axios } = useContext()
     const router = useRouter()
+    const type = ref(null)
+    const time = ref(new Date().getTime())
     const allCarList = ref([])
     const allCarLocation = ref(null)
     const loading = ref(false)
@@ -120,6 +172,9 @@ export default defineComponent({
       if (process.client) {
         if (!localStorage.getItem('auth') || !localStorage.getItem('user')) {
           router.push('/login')
+        }
+        if (localStorage.getItem('vehicle_type')) {
+          type.value = localStorage.getItem('vehicle_type')
         }
       }
 
@@ -239,7 +294,9 @@ export default defineComponent({
       copyAllCars,
       getIndex,
       turnOffDetail,
-      listenSelects
+      listenSelects,
+      type,
+      time
     }
   }
 

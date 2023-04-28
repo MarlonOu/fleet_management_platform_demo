@@ -40,6 +40,7 @@ export default defineComponent({
         const logout = () => {
             localStorage.removeItem('user');
             localStorage.removeItem('auth');
+            localStorage.removeItem('vehicle_type');
             nextTick(() => {
                 router.push('/login')
             })
