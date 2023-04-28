@@ -76,57 +76,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-6">
-                                <label class="block mb-2 font-bold"> Correlations分析 </label>
-                                <client-only>
-                                    <line-chart :data="mixSpeed" :options="option" />
-                                </client-only>
-                            </div>
-
-                        </div>
-                        <hr>
-                        <div class="row mb-3">
-                            <label class="block mb-2 font-bold"> Over/Under Threshold 分析 </label>
-                            <div class="col-sm-6">
-                                <client-only>
-                                    <line-chart :data="speed" />
-                                </client-only>
-                            </div>
-                            <div class="col-sm-6">
-                                <client-only>
-                                    <line-chart :data="rotatingSpeed" />
-                                </client-only>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-6">
-                                <client-only>
-                                    <line-chart :data="average" />
-                                </client-only>
-                            </div>
-                            <div class="col-sm-6">
-                                <client-only>
-                                    <line-chart :data="idle" />
-                                </client-only>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-6">
-                                <client-only>
-                                    <line-chart :data="idle_hours" />
-                                </client-only>
-                            </div>
-                            <div class="col-sm-6">
-                                <client-only>
-                                    <line-chart :data="instant_fuel" />
-                                </client-only>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <client-only>
-                                <line-chart :data="odo_mileage" />
-                            </client-only>
+                        <div>
+                            <line-chart :chart="mixSpeed" :chart2="speed" :chart3="rotatingSpeed" :chart4="average"
+                                :chart5="idle" :chart6="idle_hours" :chart7="instant_fuel" :chart8="odo_mileage">
+                            </line-chart>
                         </div>
                     </div>
                 </div>
@@ -160,238 +113,384 @@ export default defineComponent({
         }
         show()
         const rotatingSpeed = computed(() => {
-            const max = modal.value.speedThreshold
-            const all = modal.value.engine_speed
-            let colors = []
-            let point = []
-            all.forEach((value) => {
-                if (value > max) {
-                    colors.push('rgb(75, 192, 192)')
-                    point.push(3)
-                } else {
-                    point.push(0)
-                    colors.push('red')
-                }
-            });
-            const data = modal.value.engine_speed
-            const time = modal.value.date_time
-            const datasets = [{
 
-                label: '轉速',
-                data: data,
-                fill: true,
-                backgroundColor: colors,
-                tension: 0.1,
-                pointRadius: point
+            const max = modal.value.engineThreshold
+            const rotatingSpeed = {
+                title: { text: '轉速' },
+                xAxis: {
+                    type: 'category',
+                    data: modal.value.date_time
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                visualMap: {
+                    top: 50,
+                    right: 10,
+                    pieces: [
+                        {
+                            gt: 0,
+                            lte: max - 1,
+                            color: '#93CE07'
+                        },
 
-            }]
-            const engine_speed = {
-                labels: time,
-                datasets
+                        {
+                            gt: max,
+                            color: '#AC3B2A'
+                        }
+                    ],
+                    outOfRange: {
+                        color: '#999'
+                    }
+                },
+                series: [
+                    {
+                        data: modal.value.engine_speed,
+                        type: 'line'
+                    }
+                ],
+                dataZoom: [
+
+                    {
+                        type: 'inside'
+                    }
+                ],
             }
-            return engine_speed
+
+            return rotatingSpeed
+
+
         })
         const speed = computed(() => {
-
             const max = modal.value.speedThreshold
-            const all = modal.value.speed
-            let colors = []
-            let point = []
-            all.forEach((value) => {
-                if (value > max) {
-                    colors.push('rgb(75, 192, 192)')
-                    point.push(3)
-                } else {
-                    point.push(0)
-                    colors.push('red')
-                }
-            });
-
-            const data = modal.value.speed
-            const time = modal.value.date_time
-            const datasets = [{
-                label: '時速',
-                data: data,
-                fill: true,
-                backgroundColor: colors,
-                tension: 0.1,
-                pointRadius: point
-            }]
             const speed = {
-                labels: time,
-                datasets
+                title: { text: '時速' },
+                xAxis: {
+                    type: 'category',
+                    data: modal.value.date_time
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                visualMap: {
+                    top: 50,
+                    right: 10,
+                    pieces: [
+                        {
+                            gt: 0,
+                            lte: max - 1,
+                            color: '#93CE07'
+                        },
+
+                        {
+                            gt: max,
+                            color: '#AC3B2A'
+                        }
+                    ],
+                    outOfRange: {
+                        color: '#999'
+                    }
+                },
+                series: [
+                    {
+                        data: modal.value.speed,
+                        type: 'line'
+                    }
+                ],
+                dataZoom: [
+
+                    {
+                        type: 'inside'
+                    }
+                ],
             }
+
             return speed
+
         })
         const mixSpeed = computed(() => {
-            const engine_speed = modal.value.engine_speed
-            const speed = modal.value.speed
-            const time = modal.value.date_time
-            const datasets = [
-                {
-                    label: '轉速',
-                    yAxisID: 'y',
-                    data: engine_speed,
 
-                    fill: true,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1,
-                    pointRadius: 0
-                },
-                {
-                    label: '時速',
-                    yAxisID: 'y1',
-                    data: speed,
-
-                    fill: true,
-                    borderColor: 'rgb(155, 92, 122)',
-                    tension: 0.1,
-                    pointRadius: 0
-                },
-            ]
+            const colors = ['#5470C6', '#EE6666'];
             const mix = {
-                labels: time,
-                datasets
-            }
+                title: {
+                    text: 'Rainfall and Flow Relationship',
+                    left: 'center'
+                },
+                grid: {
+                    bottom: 80
+                },
+                toolbox: {
+                    feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+
+                },
+                legend: {
+                    data: ['Flow', 'Rainfall'],
+                    left: 10
+                },
+                dataZoom: [
+                    {
+                        show: true,
+                        realtime: true,
+                        start: 65,
+                        end: 85
+                    },
+                    {
+                        type: 'inside',
+                        realtime: true,
+                        start: 65,
+                        end: 85
+                    }
+                ],
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: modal.value.date_time
+                    }
+                ],
+                yAxis: [
+                    {
+                        name: '時速',
+                        type: 'value'
+                    },
+                    {
+                        name: '轉速',
+
+                        type: 'value',
+
+                    }
+                ],
+                series: [
+                    {
+                        name: '時速',
+                        type: 'line',
+                        // prettier-ignore
+                        data: modal.value.speed,
+                    },
+                    {
+                        name: '轉速',
+                        type: 'line',
+                        yAxisIndex: 1,
+
+                        // prettier-ignore
+                        data: modal.value.engine_speed,
+                    }
+                ]
+            };
             return mix
         })
 
-        const option = computed(() => {
-            const AAA = {
-                responsive: true,
-                maintainAspectRatio: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                stacked: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Chart.js Line Chart - Multi Axis'
-                    }
-                },
-
-                scales: {
-                    yAxes: [{
-                        id: 'y',
-                        type: 'linear',
-                        position: 'left',
-                    }, {
-                        id: 'y1',
-                        type: 'linear',
-                        position: 'right',
-                    }]
-                }
-
-            }
-            return AAA
-        })
 
 
         const average = computed(() => {
-            const engine_speed = modal.value.average_fuel
-            const speed = modal.value.speed
-            const time = modal.value.date_time
-            const datasets = [
-                {
-                    label: '平均油耗',
-                    data: engine_speed,
-                    circular: true,
-                    fill: true,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1,
-                    pointRadius: 0
-                }
-            ]
-            const mix = {
-                labels: time,
-                datasets
+            const average = {
+                title: { text: '平均油耗' },
+                xAxis: {
+                    type: 'category',
+                    data: modal.value.date_time
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: modal.value.average_fuel,
+                        type: 'line'
+                    }
+                ],
+                dataZoom: [
+
+                    {
+                        type: 'inside'
+                    }
+                ],
             }
-            return mix
+
+            return average
+
         })
+
+
+
+
+
         const idle = computed(() => {
-            const engine_speed = modal.value.idle_fuel
-            const time = modal.value.date_time
-            const datasets = [
-                {
-                    label: '怠速油耗(idle_fuel)',
-                    data: engine_speed,
-                    circular: true,
-                    fill: true,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1,
-                    pointRadius: 0
-                }
-            ]
-            const mix = {
-                labels: time,
-                datasets
+            const idle = {
+                title: { text: '怠速油耗(idle_fuel)' },
+                xAxis: {
+                    type: 'category',
+                    data: modal.value.date_time
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                series: [
+                    {
+                        data: modal.value.idle_fuel,
+                        type: 'line'
+                    }
+                ],
+                dataZoom: [
+
+                    {
+                        type: 'inside'
+                    }
+                ],
             }
-            return mix
+
+            return idle
+
+
         })
         const idle_hours = computed(() => {
-            const engine_speed = modal.value.idle_hours
-            const speed = modal.value.speed
-            const time = modal.value.date_time
-            const datasets = [
-                {
-                    label: '空轉時間(idle_hours)',
-                    data: engine_speed,
-                    circular: true,
-                    fill: true,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1,
-                    pointRadius: 0
-                }
-            ]
-            const mix = {
-                labels: time,
-                datasets
+            const idle_hours = {
+                title: { text: '空轉時間(idle_hours)' },
+                xAxis: {
+                    type: 'category',
+                    data: modal.value.date_time
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                series: [
+                    {
+                        data: modal.value.idle_hours,
+                        type: 'line'
+                    }
+                ],
+                dataZoom: [
+
+                    {
+                        type: 'inside'
+                    }
+                ],
             }
-            return mix
+
+            return idle_hours
+
+
+
+
         })
         const instant_fuel = computed(() => {
-            const engine_speed = modal.value.instant_fuel
-            const speed = modal.value.speed
-            const time = modal.value.date_time
-            const datasets = [
-                {
-                    label: '順時油耗(instant_fuel)',
-                    data: engine_speed,
-                    circular: true,
-                    fill: true,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1,
-                    pointRadius: 0
-                }
-            ]
-            const mix = {
-                labels: time,
-                datasets
+            const instant_fuel = {
+                title: { text: '順時油耗(instant_fuel)' },
+                xAxis: {
+                    type: 'category',
+                    data: modal.value.date_time
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                series: [
+                    {
+                        data: modal.value.instant_fuel,
+                        type: 'line'
+                    }
+                ],
+                dataZoom: [
+
+                    {
+                        type: 'inside'
+                    }
+                ],
             }
-            return mix
+
+            return instant_fuel
+
+
+
+
         })
         const odo_mileage = computed(() => {
-            const engine_speed = modal.value.odo_mileage
-            const speed = modal.value.speed
-            const time = modal.value.date_time
-            const datasets = [
-                {
-                    label: '總里程數(odo_mileage)',
-                    data: engine_speed,
-                    circular: true,
-                    fill: true,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1,
-                    pointRadius: 0
-                }
-            ]
-            const mix = {
-                labels: time,
-                datasets
+            const mileage = {
+                title: { text: '總里程數(odo_mileage)' },
+                xAxis: {
+                    type: 'category',
+                    data: modal.value.odo_mileage
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                series: [
+                    {
+                        data: modal.value.engine_speed,
+                        type: 'line'
+                    }
+                ],
+                dataZoom: [
+
+                    {
+                        type: 'inside'
+                    }
+                ],
             }
-            return mix
+
+            return mileage
         })
 
         return {
@@ -404,8 +503,7 @@ export default defineComponent({
             idle,
             idle_hours,
             instant_fuel,
-            odo_mileage,
-            option
+            odo_mileage
         }
     }
 })
