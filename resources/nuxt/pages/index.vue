@@ -23,7 +23,7 @@
               <label class="btn btn-danger" @click="deleteCars()">清除</label>
             </div>
           </div>
-          <table v-if="type" style="width: 100%" class="text-white text-center">
+          <table v-if="type === '1'" style="width: 100%" class="text-white text-center">
             <tr>
               <th>查看</th>
               <th>駕駛人姓名</th>
