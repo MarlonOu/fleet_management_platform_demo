@@ -6,7 +6,7 @@
           <Map :setLocation="allCarList"></Map>
         </div>
 
-        <div class="bg-success" style="height:50vh">
+        <div class="bg-success" style="height:50vh; overflow-y:scroll">
           <div class="row py-3">
             <div class="col-3">
               <select class="form-select" v-model="selects" @change="listenSelects">

@@ -2,7 +2,7 @@
     <div class="py-5">
         <div class="container">
             <div>
-                <h1>SwiSys車隊管理平台 ESG 車輛查詢結果</h1>
+                <h1 class="text-center">SwiSys車隊管理平台 ESG 車輛查詢結果</h1>
                 <div>
                     <div v-if="loadingData" class="text-center">
                         <h5 class="fw-bold mb-5 text-primary">
