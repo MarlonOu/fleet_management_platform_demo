@@ -16,8 +16,8 @@
                         <NuxtLink v-if="route.path === '/'" to="/admin">ESG管理系統</NuxtLink>
                         <NuxtLink v-else to="/">SwiSys車隊管理平台</NuxtLink>
                     </li>
-                    <li class="nav-item nav-link">
-                        <NuxtLink to="/login" @click="logout()">登出</NuxtLink>
+                    <li class="nav-item nav-link" style="cursor: pointer;">
+                        <div @click="logout()">登出</div>
                     </li>
                 </div>
 
@@ -26,11 +26,12 @@
     </div>
 </template>
 <script>
-import { useRoute, defineComponent, ref, nextTick } from '@nuxtjs/composition-api'
+import { useRoute, defineComponent, ref, nextTick, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
     setup() {
         const route = useRoute()
+        const router = useRouter()
         const user = ref('')
         const setUser = () => {
             if (process.client) {
@@ -38,9 +39,9 @@ export default defineComponent({
             }
         }
         const logout = () => {
-            localStorage.removeItem('user');
-            localStorage.removeItem('auth');
-            localStorage.removeItem('vehicle_type');
+            window.localStorage.removeItem('user');
+            window.localStorage.removeItem('auth')
+            window.localStorage.removeItem('vehicle_type')
             nextTick(() => {
                 router.push('/login')
             })

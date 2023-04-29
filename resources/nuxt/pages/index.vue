@@ -156,7 +156,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, useContext, ref, useRouter, nextTick, watch } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useContext, ref, useRouter, nextTick, watch, useRoute } from '@nuxtjs/composition-api'
 import moment from 'moment'
 
 export default defineComponent({
@@ -164,6 +164,7 @@ export default defineComponent({
     const { $swal, $axios } = useContext()
     const router = useRouter()
     const type = ref(null)
+    const route = useRoute()
     const time = ref(new Date().getTime())
     const allCarList = ref([])
     const allCarLocation = ref(null)
@@ -221,7 +222,9 @@ export default defineComponent({
     const getAll = () => {
       setInterval(() => {
         if (!loading.value) {
-          getNowAllCarLocation()
+          if (route.value.path === '/') {
+            getNowAllCarLocation()
+          }
         }
       }, "3000");
     }
