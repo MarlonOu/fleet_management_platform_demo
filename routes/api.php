@@ -23,6 +23,7 @@ use App\Http\Controllers\AllVehicleInformationController;
 use App\Http\Controllers\GetAttendanceRecordController;
 use App\Http\Controllers\GetAttendanceDetailController;
 use App\Http\Controllers\GetHistoryDataController;
+use App\Http\Controllers\UploadObdiiVehicleDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,7 @@ Route::resource('get-history-data', GetHistoryDataController::class);
 //以下小客車相關api--------------------------------------------------------------------------------------------
 //
 
-
+Route::resource('upload-obdii-vehicle-data', UploadObdiiVehicleDataController::class);
 
 
 

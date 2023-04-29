@@ -82,7 +82,8 @@ class Post extends Controller
             'ap1_lis' => $carRealtimeData['ap1_lis']
             ]);
 
-        return response()->json($carRealtimeData);
+        // return response()->json($carRealtimeData);
+        return 200;
     }
 
     /**
