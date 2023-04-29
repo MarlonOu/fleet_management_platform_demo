@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'nuxt',
+    title: 'SwiSys車隊管理平台',
     htmlAttrs: {
       lang: 'en'
     },
