@@ -37,6 +37,22 @@
                             </div>
                             <div class="mb-2 d-flex justify-content-between">
                                 <div>
+                                    車輛品牌:
+                                </div>
+                                <div>
+                                    {{ modal.vehicle_brand }}
+                                </div>
+                            </div>
+                            <div class="mb-2 d-flex justify-content-between">
+                                <div>
+                                    車輛型式:
+                                </div>
+                                <div>
+                                    {{ modal.vehicle_model }}
+                                </div>
+                            </div>
+                            <div class="mb-2 d-flex justify-content-between">
+                                <div>
                                     任務啟動時間:
                                 </div>
                                 <div>
@@ -61,14 +77,6 @@
                             </div>
                             <div class="mb-2 d-flex justify-content-between">
                                 <div>
-                                    任務行駛總里程:
-                                </div>
-                                <div>
-                                    {{ modal.mileage }}
-                                </div>
-                            </div>
-                            <div class="mb-2 d-flex justify-content-between">
-                                <div>
                                     碳排放:
                                 </div>
                                 <div>
@@ -77,8 +85,8 @@
                             </div>
                         </div>
                         <div>
-                            <line-chart :chart="mixSpeed" :chart2="speed" :chart3="rotatingSpeed" :chart4="average"
-                                :chart5="idle" :chart6="instant_fuel" :chart7="idle_hours" :chart8="odo_mileage">
+                            <line-chart :chart="mixSpeed" :chart2="speed" :chart3="rotatingSpeed" :chart4="oxygenSensor"
+                                :chart5="shortFuel" :chart6="fuelRate" :chart7="massAirFlow" :chart8="airFuelRatio">
                             </line-chart>
                         </div>
                     </div>
@@ -311,9 +319,9 @@ export default defineComponent({
 
 
 
-        const average = computed(() => {
-            const average = {
-                title: { text: '平均油耗 (Engine Average Fuel Economy)' },
+        const oxygenSensor = computed(() => {
+            const oxygenSensor = {
+                title: { text: '含氧感知器電壓 (Oxygen Sensor)' },
                 xAxis: {
                     type: 'category',
                     data: modal.value.date_time
@@ -329,11 +337,11 @@ export default defineComponent({
                 },
                 yAxis: {
                     type: 'value',
-                    name: '單位: km/L'
+                    name: '單位: V'
                 },
                 series: [
                     {
-                        data: modal.value.average_fuel,
+                        data: modal.value.oxygen_sensor,
                         type: 'line'
                     }
                 ],
@@ -345,7 +353,7 @@ export default defineComponent({
                 ],
             }
 
-            return average
+            return oxygenSensor
 
         })
 
@@ -353,53 +361,16 @@ export default defineComponent({
 
 
 
-        const idle = computed(() => {
-            const idle = {
-                title: { text: '總怠速之消耗油量 (Engine Total Idle Fuel Used)' },
+        const shortFuel = computed(() => {
+            const shortFuel = {
+                title: { text: '短期燃油修正比 (Short Fuel)' },
                 xAxis: {
                     type: 'category',
                     data: modal.value.date_time
                 },
                 yAxis: {
                     type: 'value',
-                    name: '單位: L'
-                },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                grid: {
-                    left: '10%',
-                    right: '15%',
-                    bottom: '10%',
-                },
-                series: [
-                    {
-                        data: modal.value.idle_fuel,
-                        type: 'line'
-                    }
-                ],
-                dataZoom: [
-
-                    {
-                        type: 'inside'
-                    }
-                ],
-            }
-
-            return idle
-
-
-        })
-        const idle_hours = computed(() => {
-            const idle_hours = {
-                title: { text: '引擎總怠速時間 (Engine Total Idle Hours)' },
-                xAxis: {
-                    type: 'category',
-                    data: modal.value.date_time
-                },
-                yAxis: {
-                    type: 'value',
-                    name: '單位: h'
+                    name: '單位: %'
                 },
                 tooltip: {
                     trigger: 'axis'
@@ -412,7 +383,7 @@ export default defineComponent({
                 },
                 series: [
                     {
-                        data: modal.value.idle_hours,
+                        data: modal.value.short_fuel,
                         type: 'line'
                     }
                 ],
@@ -424,22 +395,20 @@ export default defineComponent({
                 ],
             }
 
-            return idle_hours
-
-
+            return shortFuel
 
 
         })
-        const instant_fuel = computed(() => {
-            const instant_fuel = {
-                title: { text: '瞬時油耗 (Engine Instantaneous Fuel Economy)' },
+        const fuelRate = computed(() => {
+            const fuelRate = {
+                title: { text: '耗油量 (Fuel Rate)' },
                 xAxis: {
                     type: 'category',
                     data: modal.value.date_time
                 },
                 yAxis: {
                     type: 'value',
-                    name: '單位: km/L'
+                    name: '單位: L/h'
                 },
                 tooltip: {
                     trigger: 'axis'
@@ -452,7 +421,7 @@ export default defineComponent({
                 },
                 series: [
                     {
-                        data: modal.value.instant_fuel,
+                        data: modal.value.fuel_rate,
                         type: 'line'
                     }
                 ],
@@ -464,22 +433,22 @@ export default defineComponent({
                 ],
             }
 
-            return instant_fuel
+            return fuelRate
 
 
 
 
         })
-        const odo_mileage = computed(() => {
-            const mileage = {
-                title: { text: '總里程數 (Total Vehicle Distance)' },
+        const massAirFlow = computed(() => {
+            const massAirFlow = {
+                title: { text: '空氣流量 (Mass Air Flow)' },
                 xAxis: {
                     type: 'category',
                     data: modal.value.date_time
                 },
                 yAxis: {
                     type: 'value',
-                    name: '單位: km'
+                    name: '單位: g/s'
                 },
                 tooltip: {
                     trigger: 'axis'
@@ -492,7 +461,7 @@ export default defineComponent({
                 },
                 series: [
                     {
-                        data: modal.value.odo_mileage,
+                        data: modal.value.mass_air_flow,
                         type: 'line'
                     }
                 ],
@@ -504,7 +473,47 @@ export default defineComponent({
                 ],
             }
 
-            return mileage
+            return massAirFlow
+
+
+
+
+        })
+        const airFuelRatio = computed(() => {
+            const airFuelRatio = {
+                title: { text: '空燃比 (Air Fuel Ratio)' },
+                xAxis: {
+                    type: 'category',
+                    data: modal.value.date_time
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '無單位，例: 14:1'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '10%',
+                    right: '15%',
+                    bottom: '10%',
+                    containLebel: true
+                },
+                series: [
+                    {
+                        data: modal.value.air_fuel_ratio,
+                        type: 'line'
+                    }
+                ],
+                dataZoom: [
+
+                    {
+                        type: 'inside'
+                    }
+                ],
+            }
+
+            return airFuelRatio
         })
 
         return {
@@ -513,11 +522,11 @@ export default defineComponent({
             rotatingSpeed,
             speed,
             mixSpeed,
-            average,
-            idle,
-            idle_hours,
-            instant_fuel,
-            odo_mileage
+            oxygenSensor,
+            shortFuel,
+            fuelRate,
+            massAirFlow,
+            airFuelRatio
         }
     }
 })

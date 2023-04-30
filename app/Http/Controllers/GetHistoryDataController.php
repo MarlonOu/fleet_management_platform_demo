@@ -165,6 +165,8 @@ class GetHistoryDataController extends Controller
             $driverNumber = $taskData->driver_number;
             $driverName = DB::table($tax_id . '_obdii_driver_information')->where('driver_number', '=', $driverNumber)->pluck('driver_name')[0];
             $licencePlate = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('licence_plate')[0];
+            $vehicleBrand = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('vehicle_brand')[0];
+            $vehicleModel = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('vehicle_number', '=', $vehicleNumber)->pluck('vehicle_model')[0];
             $taskStartTime = $taskData->task_start_time;
             $taskEndTime = $taskData->task_end_time;
             $time = $taskEndTime - $taskStartTime;
@@ -194,12 +196,14 @@ class GetHistoryDataController extends Controller
                 array_push($shortFuelList, (float)$historyData[$i]->short_fuel);
                 array_push($fuelRateList, (float)$historyData[$i]->fuel_rate);
                 array_push($massAirFlowList, (float)$historyData[$i]->mass_air_flow);
-                array_push($airFuelRatioList, $historyData[$i]->air_fuel_ratio);
+                array_push($airFuelRatioList, (float)(explode(":", $historyData[$i]->air_fuel_ratio)[0]));
             }
     
             $esgData = array(
                 'tax_id'=> $tax_id,
                 'licence_plate'=> $licencePlate,
+                'vehicle_brand'=> $vehicleBrand,
+                'vehicle_model'=> $vehicleModel,
                 'driver_name'=> $driverName,
                 'task_start_sime'=> $taskStartTime,
                 'task_end_time'=> $taskEndTime,

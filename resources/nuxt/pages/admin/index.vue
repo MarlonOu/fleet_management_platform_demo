@@ -69,7 +69,11 @@
                         <td>
                             {{ allCar.time }}
                         </td>
-                        <td>
+                        <td v-if="type === '1'">
+                            <NuxtLink :to="'admin/obdii/' + allCar.task_number" target="_blank" class="btn btn-danger">查看
+                            </NuxtLink>
+                        </td>
+                        <td v-else>
                             <NuxtLink :to="'admin/tax/' + allCar.task_number" target="_blank" class="btn btn-danger">查看
                             </NuxtLink>
                         </td>
@@ -196,6 +200,7 @@ export default defineComponent({
     setup() {
         const { $axios } = useContext()
         const router = useRouter()
+        const type = ref(null)
         const allCarDetailsList = ref([])
         const loading = ref(false)
         const getAllCarLocation = () => {
@@ -203,13 +208,19 @@ export default defineComponent({
                 if (!localStorage.getItem('auth') || !localStorage.getItem('user')) {
                     router.push('/login')
                 }
+                if (localStorage.getItem('vehicle_type')) {
+                type.value = localStorage.getItem('vehicle_type')
+                }
             }
         }
         getAllCarLocation()
         const loadingData = ref(false)
         const modal = ref('')
         const show = (val) => {
-            router.push(`admin/tax/${val}`)
+            if (type.value)
+                router.push(`admin/obdii/${val}`)
+            else
+                router.push(`admin/tax/${val}`)
         }
         const disabled = computed(() => {
             if (loading.value || !licence_plate.value) {
@@ -346,6 +357,7 @@ export default defineComponent({
             rotatingSpeed,
             speed,
             mixSpeed,
+            type,
             clear
         }
     }

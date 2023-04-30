@@ -110,7 +110,7 @@
             <b>X</b>
           </span>
         </div>
-        <h4>車輛狀態</h4>
+        <h4>車輛資訊</h4>
         車號: {{ getRunCarsDetails[getIndex].licence_plate }} <br>
         駕駛人: {{ getRunCarsDetails[getIndex].driver_name }} <br>
         行駛時間: {{ getRunCarsDetails[getIndex].time }}<br>
@@ -121,27 +121,39 @@
           <div class="col-sm-6" style="height: 50px">
             時速
             <br>
-            <b>{{ getRunCarsDetails[getIndex].speed }}</b>
+            <b>{{ getRunCarsDetails[getIndex].speed + " km/h" }}</b>
           </div>
           <div class="col-sm-6" style="height: 50px">
             轉速
             <br>
-            <b>{{ getRunCarsDetails[getIndex].engine_speed }}</b>
+            <b>{{ getRunCarsDetails[getIndex].engine_speed + " rpm" }}</b>
           </div>
         </div>
-        <div class="row text-center">
+        <div v-if="type === '1'" class="row text-center">
+          <div  class="col-sm-6" style="height: 50px">
+            短期燃油修正比
+            <br>
+            <b>{{ getRunCarsDetails[getIndex].short_fuel + " %"}}</b>
+          </div>
+          <div class="col-sm-6" style="height: 50px">
+            含氧感知器電壓
+            <br>
+            <b>{{ getRunCarsDetails[getIndex].oxygen_sensor + " V"}}</b>
+          </div>
+        </div>
+        <div v-else class="row text-center">
+          <div class="col-sm-6" style="height: 50px">
+            瞬時油耗
+            <br>
+            <b>{{ getRunCarsDetails[getIndex].instant_fuel + " km/L"}}</b>
+          </div>
           <div class="col-sm-6" style="height: 50px">
             總里程
             <br>
-            <b>{{ getRunCarsDetails[getIndex].odo_mileage }}</b>
-          </div>
-          <div class="col-sm-6" style="height: 50px">
-            排放標準
-            <br>
-            <b>{{ getRunCarsDetails[getIndex].emission_standards }}</b>
+            <b>{{ getRunCarsDetails[getIndex].odo_mileage + " km"}}</b>
           </div>
         </div>
-        <img v-if="type"
+        <img v-if="type === '1'"
           :src="`/${getRunCarsDetails[getIndex].vehicle_brand}/${getRunCarsDetails[getIndex].vehicle_model}.png`"
           width="100%" alt="图片">
 

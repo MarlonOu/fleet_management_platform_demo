@@ -1,5 +1,6 @@
 <template>
     <div id="echarts">
+        <hr>
         <div class="row mb-3">
             <div class="col-sm-6">
                 <label class="block mb-2 font-bold"> Correlations分析 </label>
@@ -23,6 +24,7 @@
 
             </div>
         </div>
+        <hr>
         <div class="row mb-3">
             <div class="col-sm-6">
 
@@ -157,8 +159,8 @@ export default {
 </script>
 <style lang="scss">
 #myChart {
-    width: 600px;
-    height: 300px;
+    width: 900px;
+    height: 400px;
     margin-left: auto;
     margin-right: auto;
     float: left;
