@@ -37,9 +37,11 @@ class AllVehicleInformationController extends Controller
             $workVehicleDriverNumber = array();
             $workVehicleData = array();
             for ($i = 0; $i < sizeof($realtimeData); $i++) {
-                if ($realtimeData[$i]->vehicle_status == 1) array_push($workVehicleNumber, $realtimeData[$i]->vehicle_number);
-                array_push($workVehicleDriverNumber, $realtimeData[$i]->driver_number);
-                array_push($workVehicleData, $realtimeData[$i]);
+                if ($realtimeData[$i]->vehicle_status == 1) {
+                    array_push($workVehicleNumber, $realtimeData[$i]->vehicle_number);
+                    array_push($workVehicleDriverNumber, $realtimeData[$i]->driver_number);
+                    array_push($workVehicleData, $realtimeData[$i]);
+                }
             }
             for ($i = 0; $i < sizeof($workVehicleNumber); $i++) {
                 $driverName = DB::table($tax_id . '_driver_information')->where('driver_number', '=', $workVehicleDriverNumber[$i])->pluck('driver_name')[0];
@@ -97,19 +99,20 @@ class AllVehicleInformationController extends Controller
             $workVehicleDriverNumber = array();
             $workVehicleData = array();
             for ($i = 0; $i < sizeof($realtimeData); $i++) {
-                if ($realtimeData[$i]->vehicle_status == 1)
+                if ($realtimeData[$i]->vehicle_status == 1){
                     array_push($workVehicleNumber, $realtimeData[$i]->vehicle_number);
-                array_push($workVehicleDriverNumber, $realtimeData[$i]->driver_number);
-                array_push($workVehicleData, $realtimeData[$i]);
+                    array_push($workVehicleDriverNumber, $realtimeData[$i]->driver_number);
+                    array_push($workVehicleData, $realtimeData[$i]);
+                }
             }
             for ($i = 0; $i < sizeof($workVehicleNumber); $i++) {
                 $driverName = DB::table($tax_id . '_obdii_driver_information')->where('driver_number', '=', $workVehicleDriverNumber[$i])->pluck('driver_name')[0];
                 $licencePlate = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('licence_plate')[0];
                 $vehicle_brand = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('vehicle_brand')[0];
                 $vehicle_model = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('vehicle_model')[0];
-                $odoMileage = DB::table($tax_id . '_obdii_vehicle_realtime_information')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('odo_mileage')[0];
-                $taskStartMileage = DB::table($tax_id . '_obdii_vehicle_attendance_record')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('task_start_mileage')[0];
-                $milage = round($odoMileage - $taskStartMileage, 3);
+                // $odoMileage = DB::table($tax_id . '_obdii_vehicle_realtime_information')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('odo_mileage')[0];
+                // $taskStartMileage = DB::table($tax_id . '_obdii_vehicle_attendance_record')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('task_start_mileage')[0];
+                // $milage = round($odoMileage - $taskStartMileage, 3);
                 $realtimeTime = DB::table($tax_id . '_obdii_vehicle_realtime_information')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('date_time')[0];
                 $taskStartTime = DB::table($tax_id . '_obdii_vehicle_attendance_record')->where('vehicle_number', '=', $workVehicleNumber[$i])->pluck('task_start_time')[0];
                 $time = $realtimeTime - $taskStartTime;
@@ -142,7 +145,7 @@ class AllVehicleInformationController extends Controller
                 $workVehicleData[$i]->licence_plate = $licencePlate;
                 $workVehicleData[$i]->vehicle_brand = $vehicle_brand;
                 $workVehicleData[$i]->vehicle_model = $vehicle_model;
-                $workVehicleData[$i]->milage = $milage;
+                // $workVehicleData[$i]->milage = $milage;
                 $workVehicleData[$i]->time = $time;
                 $workVehicleData[$i]->task_overtime = $taskOvertime;
             }

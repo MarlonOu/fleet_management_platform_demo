@@ -85,7 +85,7 @@ class GetAttendanceDetailController extends Controller
             $vehicleNumber = DB::table($tax_id . '_obdii_commercial_vehicle_specification')->where('licence_plate', '=', $licencePlate)->pluck('vehicle_number')[0];
             $driverName = $request['driver_name'];
             $driverNumber = DB::table($tax_id . '_obdii_driver_information')->where('driver_name', '=', $driverName)->pluck('driver_number')[0];
-            $query = [['vehicle_number', $vehicleNumber], ['driver_number', $driverNumber]];
+            $query = [['vehicle_number', $vehicleNumber], ['driver_number', $driverNumber], ['task_status', 1]];
             $taskData = DB::table($tax_id . '_obdii_vehicle_attendance_record')->where($query)->get();
             $taskInformation = array();
             for ($i = 0; $i < sizeof($taskData); $i++) {

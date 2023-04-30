@@ -32,7 +32,6 @@
               <th>車輛型式</th>
               <th>時速</th>
               <th>轉速</th>
-              <th>行駛里程數</th>
               <th>時間</th>
             </tr>
             <tr v-if="getRunCarsDetails.length > 0" v-for="(carList, index) in getRunCarsDetails">
@@ -58,9 +57,6 @@
               </td>
               <td>
                 {{ carList.engine_speed }}
-              </td>
-              <td>
-                {{ carList.odo_mileage }}
               </td>
               <td>
                 {{ carList.date_time }}

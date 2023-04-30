@@ -86,6 +86,7 @@ class GetAttendanceRecordController extends Controller
     {
         $user = auth()->user();
         $vehicle_type = $user['vehicle_type'];
+        
         function truck($licencePlate)
         {
             $user = auth()->user();
