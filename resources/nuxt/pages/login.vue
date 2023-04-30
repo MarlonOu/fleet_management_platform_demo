@@ -35,7 +35,7 @@ export default defineComponent({
                     localStorage.setItem('user', data.original.user.name)
                     localStorage.setItem('vehicle_type', data.original.user.vehicle_type)
                     nextTick(() => {
-                        router.push({ path: '/', refresh: true })
+                        window.location.href = "/"
                     })
                 })
                 .catch((e) => {

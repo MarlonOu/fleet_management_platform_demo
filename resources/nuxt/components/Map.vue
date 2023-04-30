@@ -8,9 +8,9 @@
                 @click="currentLocation = location">
                 <GMapInfoWindow :options="{ maxWidth: 200 }">
                     <code>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                lat: {{ location.lat }},
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                lng: {{ location.lng }}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </code>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        lat: {{ location.lat }},
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        lng: {{ location.lng }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </code>
                 </GMapInfoWindow>
             </GMapMarker>
             <GMapCircle />
@@ -83,8 +83,6 @@ export default {
             this.$nextTick(() => {
                 this.$refs.gMap.initChildren()
             })
-
-
         }
     }
 }
